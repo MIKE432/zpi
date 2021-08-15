@@ -1,59 +1,87 @@
-import { Input } from "../../components/Input";
 import { Scrollable, withModal } from "../../components/Wrappers";
-import { Button } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import React, { FC } from "react";
-import styled  from "styled-components";
-import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import { SpecificAbout } from "./RegisterAndLoginModule";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import { registerForm } from "../../formSchemas/RegisterPageSchemas";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-const RegisterPageComponent = () =>
-    (
-        <div>
-            <h2>Zarejestruj się</h2>
-            <Scrollable maxHeight="80vh">
-
-                <Input margin="normal" label="Imię" size="small" type="email" fullWidth={ true }/>
-                <Input margin="normal" label="Nazwisko" size="small" type="password" fullWidth={ true }/>
-                <Input margin="normal" label="E-mail" size="small" type="email" fullWidth={ true }/>
-                <Input margin="normal" label="Hasło" size="small" type="password" fullWidth={ true }/>
-                <Input margin="normal" label="Powtórz hasło" size="small" type="password" fullWidth={ true }/>
-            </Scrollable>
-            <Button fullWidth={ true } variant={ "contained" } color={ "primary" }>Zarejestruj się</Button>
-
-        </div>
-
-    )
-
-
+interface Inputs {
+    firstName: string;
+    surname: string;
+    email: string;
+    password1: string;
+    password2: string;
+}
 
 const RegisterAboutContainer = styled.div<{ isVisible: boolean }>`
-  
   height: 100%;
   transition: .5s;
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
+  flex-direction: column;
   left: 0;
   width: 50%;
   top: 0;
-  opacity: ${props => props.isVisible ? '1' : '0'};
+  opacity: ${ props => props.isVisible ? '1' : '0' };
+  z-index: ${ props => props.isVisible ? '1' : '-1' };
 `
 
+const RegisterForm = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(registerForm) });
 
-
-export const RegisterAbout: FC<SpecificAbout> = ({ location }) => {
-
+    const onSubmit: SubmitHandler<Inputs> = (data: any) => console.log(data)
 
     return (
-         <RegisterAboutContainer isVisible={location === '/register'}>
-             <h1>Zarejestruj się</h1>
-             <Button onAnimationEnd={(e) =>{e.persist()
+        <>
+            <h2>Zarejestruj się</h2>
 
-             }}>Zaloguj się</Button>
-         </RegisterAboutContainer>
-     )
+            <form onSubmit={ handleSubmit(onSubmit) } noValidate>
+                <Scrollable maxHeight="80vh">
+                    <TextField id="firstName" margin="normal" label="Imię" size="small" type="text" variant="outlined"
+                               fullWidth={ true } error={ errors.firstName !== undefined }
+                               helperText={ errors.firstName?.message } { ...register("firstName", {
+                        required: true,
+                        maxLength: 20
+                    }) }/>
+                    <TextField id="lastName" margin="normal" label="Nazwisko" size="small" type="text"
+                               variant="outlined"
+                               fullWidth={ true } { ...register("surname") }/>
+                    <TextField id="email" margin="normal" label="E-mail" size="small" type="email" variant="outlined"
+                               fullWidth={ true } { ...register("email") }/>
+                    <TextField id="password1" margin="normal" label="Hasło" size="small" type="password"
+                               variant="outlined"
+                               fullWidth={ true } { ...register("password1") }/>
+                    <TextField id="password2" margin="normal" label="Powtórz hasło" size="small" type="password"
+                               variant="outlined"
+                               fullWidth={ true } { ...register("password2") }/>
+                </Scrollable>
+                <Button fullWidth={ true } variant="contained" color="primary" type="submit">Zarejestruj się</Button>
+
+            </form>
+        </>
+    )
+}
+
+export const RegisterAbout: FC<SpecificAbout> = ({ location }) => {
+    const history = useHistory()
+    return (
+        <RegisterAboutContainer isVisible={ location === '/register' }>
+            <h1>Zarejestruj się</h1>
+            <h3>I poczuj jak łatwo zarządzać organizacją studencką!</h3>
+            <span>Masz już konto?</span>
+            <Button
+                onClick={ () => history.push('/login') }
+                variant="outlined"
+                color="secondary">Zaloguj się</Button>
+        </RegisterAboutContainer>
+
+    )
 }
 
 
-export const RegisterPage = withModal(RegisterPageComponent)
+export const RegisterPage = withModal(RegisterForm)

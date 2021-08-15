@@ -3,6 +3,9 @@ import React from "react";
 import { WithBlur, WithModal } from "../types/WrapperTypes";
 import { RGBAColor } from "../types/UITypes";
 
+export interface BlurOptions {
+    blur: number
+}
 
 const Blur = styled.div<BlurOptions>`
   width: 100%;
@@ -10,24 +13,24 @@ const Blur = styled.div<BlurOptions>`
   display: flex;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(${ ({ blur }) => blur }px);
+  justify-content: center;
+  align-items: center;
 `
 
 //nie mam pojecia jak naprawić ten szajs XD
 const Modal = styled.div<any>`
-  width: max-content;
-  height: max-content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: ${props => props.padding}px;
   background: ${props => props.color && css`rgba(${props.color.red}, ${props.color.green}, ${props.color.blue}, ${props.color.opacity})`};
   border-radius: ${props => props.radius}px;
-
+  margin: ${props => props.margin ?? '0 auto'}px;
+  position: ${props => props.position ?? 'inherit'};
+  z-index: ${props => props.zIndex ?? 1};
+  max-width: ${props => props.maxWidth ?? 'none'};
+  max-height: ${props => props.maxHeight ?? 'none'};
+  
   @media (max-width: 768px) {
     flex-direction: column;
-    width: 100%;
-    height: max-content;
-    margin: 15px;
+    margin: ${props => props.margin * 2}px;
   }
 `
 
@@ -36,14 +39,15 @@ export const Scrollable = styled.div<{ maxHeight: string}>`
   overflow: auto;
 `
 
-export interface BlurOptions {
-    blur: number
-}
-
 export interface ModalOptions {
-    radius: number,
+    radius?: number,
     color?: RGBAColor,
-    padding: number
+    padding?: number,
+    margin?: number,
+    zIndex?: number,
+    position?: 'fixed' | 'sticky' | 'absolute' | 'relative' | 'static' | 'inherit',
+    maxWidth?: "max-content" | "none" | "min-content",
+    maxHeight?: "max-content" | "none" | "min-content"
 }
 
 
@@ -59,7 +63,9 @@ const defaultModalOptions: ModalOptions = {
         blue: 255,
         opacity: 0.8
     },
-    padding: 20
+    padding: 20,
+    margin: 0,
+    position: "static",
 }
 
 

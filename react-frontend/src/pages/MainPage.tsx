@@ -1,4 +1,10 @@
-export const MainPage = () =>
-    <div>
-        MainPage
-    </div>
+import React from "react";
+
+export const MainPage = () => {
+    return (
+        <div>
+            MainPage
+        </div>
+    )
+}
+

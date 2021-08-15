@@ -56,7 +56,10 @@
 
 .slide-enter {
   transform: translateY(0%);
+}
 
+.react-link {
+  text-decoration: none;
 }
 
 
