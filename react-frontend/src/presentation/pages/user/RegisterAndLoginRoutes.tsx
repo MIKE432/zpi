@@ -1,9 +1,9 @@
-import { useHistory, useLocation, withRouter } from "react-router-dom";
-import { AnimatedRoutes, RouteTransition } from "../../components/AnimatedRoutes";
+import { useHistory, useLocation, useRouteMatch, withRouter } from "react-router-dom";
+import { AnimatedRoutes, RouteTransition } from "../../../infrastructure/components/AnimatedRoutes";
 import React from "react";
 import { LoginAbout, LoginPage } from "./LoginPage";
 import { RegisterAbout, RegisterPage } from "./RegisterPage";
-import { withBlur, withModal } from "../../components/Wrappers";
+import { withBlur, withModal } from "../../../infrastructure/components/Wrappers";
 import styled from "styled-components";
 import { Button } from "@material-ui/core";
 
@@ -105,7 +105,6 @@ const About = withRouter(() => {
 
 const LoginTopBar = () => {
     const history = useHistory()
-
     return (
         <LoginMenuContainer>
             <LoginMenu>
@@ -115,12 +114,12 @@ const LoginTopBar = () => {
                     Main
                 </Button>
                 <Button onClick={ () => {
-                    history.push("/login")
+                    history.push("/user/login")
                 } }>
                     Login
                 </Button>
                 <Button onClick={ () => {
-                    history.push("/register")
+                    history.push("/user/register")
                 } }>
                     <span>Register</span>
                 </Button>
@@ -130,25 +129,29 @@ const LoginTopBar = () => {
 }
 
 
-export const RegisterAndLoginModule = withRouter(({ location }) => (
-    <>
-        <LoginTopBar/>
-        <RegisterAndLoginModuleContainer>
-            <RegisterAndLoginAbout>
-                <About/>
-            </RegisterAndLoginAbout>
-            <AnimatedRoutes exitBeforeEnter initial={ false }>
-                <RouteTransition path="/login" exact slide={ 150 }>
-                    <RegisterAndLoginPageContainer>
-                        <LoginPage/>
-                    </RegisterAndLoginPageContainer>
-                </RouteTransition>
-                <RouteTransition path="/register" exact slide={ 150 }>
-                    <RegisterAndLoginPageContainer>
-                        <RegisterPage/>
-                    </RegisterAndLoginPageContainer>
-                </RouteTransition>
-            </AnimatedRoutes>
-        </RegisterAndLoginModuleContainer>
-    </>
-))
+export const RegisterAndLoginRoutes = withRouter(({ location }) => {
+    const {path} = useRouteMatch()
+
+    return (
+        <>
+            <LoginTopBar/>
+            <RegisterAndLoginModuleContainer>
+                <RegisterAndLoginAbout>
+                    <About/>
+                </RegisterAndLoginAbout>
+                <AnimatedRoutes exitBeforeEnter initial={ false }>
+                    <RouteTransition exact={ false } path={ `${ path }/login` } slide={ 150 }>
+                        <RegisterAndLoginPageContainer>
+                            <LoginPage/>
+                        </RegisterAndLoginPageContainer>
+                    </RouteTransition>
+                    <RouteTransition exact={ false } path={ `${ path }/register` } slide={ 150 }>
+                        <RegisterAndLoginPageContainer>
+                            <RegisterPage/>
+                        </RegisterAndLoginPageContainer>
+                    </RouteTransition>
+                </AnimatedRoutes>
+            </RegisterAndLoginModuleContainer>
+        </>
+    )
+})

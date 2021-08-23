@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { DialogProps } from "../types/UITypes";
+import { DialogProps } from "../../application/types/UITypes";
 
 const ModalBackground = styled.div<{ blur?: number, isVisible: boolean }>`
   width: 100vw;

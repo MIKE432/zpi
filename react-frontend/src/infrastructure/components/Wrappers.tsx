@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import React from "react";
-import { WithBlur, WithModal } from "../types/WrapperTypes";
-import { RGBAColor } from "../types/UITypes";
+import { WithBlur, WithModal } from "../../application/types/WrapperTypes";
+import { RGBAColor } from "../../application/types/UITypes";
 
 export interface BlurOptions {
     blur: number
