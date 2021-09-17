@@ -16,5 +16,5 @@ export const StyledDivColumn = styled.div`
 
 export const AnimatedDiv = styled.div<{ isVisible: boolean }>`
   transition: 2s;
-  opacity: ${ props => props.isVisible ? '1' : '0' };
+  opacity: ${props => props.isVisible ? '1' : '0'};
 `
