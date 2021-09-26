@@ -1,10 +1,11 @@
 package com.example.sztoswro.organization
 
-import com.example.sztoswro.member.MemberDTO
 import javax.persistence.*
 
 @Entity
-data class OrganizationDAO(
+@Table(name = "organization")
+data class OrganizationDAO (
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     var id: Long,
