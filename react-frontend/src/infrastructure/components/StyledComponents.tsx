@@ -1,20 +1,21 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const StyledDivRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-`
+`;
 
-export const StyledDivColumn = styled.div`
+export const CenteredContent = styled.div<{ width?: string }>`
+  width: ${(props) => props.width ?? '50%'};
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-`
-
-export const AnimatedDiv = styled.div<{ isVisible: boolean }>`
-  transition: 2s;
-  opacity: ${props => props.isVisible ? '1' : '0'};
-`
+  justify-content: center;
+  margin: 0 auto;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 5px;
+    width: 100%;
+  }
+`;

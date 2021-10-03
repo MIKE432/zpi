@@ -1,8 +1,7 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { combineEpics } from "redux-observable";
-import { RootState } from "../Reducers";
+import { PayloadAction } from '@reduxjs/toolkit';
+import { combineEpics } from 'redux-observable';
+import { RootState } from '../Reducers';
 
-export type AppAction = PayloadAction<any>
+export type AppAction = PayloadAction<any>;
 
-export const rootEpic = combineEpics<AppAction, AppAction, RootState>()
-
+export const rootEpic = combineEpics<AppAction, AppAction, RootState>();

@@ -1,20 +1,19 @@
-import {combineReducers, createReducer} from '@reduxjs/toolkit';
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
 
 export interface AppState {
-    loading: boolean;
+  loading: boolean;
 }
 
 export interface RootState {
-    app: AppState
+  app: AppState;
 }
 
 export const defaultState: AppState = {
-    loading: false
-}
+  loading: false
+};
 
-export const appReducer = createReducer(defaultState, _ => {
-})
+export const appReducer = createReducer(defaultState, (_) => {});
 
 export const rootReducer = combineReducers({
-    app: appReducer
-})
+  app: appReducer
+});
