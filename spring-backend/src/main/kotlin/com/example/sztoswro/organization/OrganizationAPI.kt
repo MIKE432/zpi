@@ -51,9 +51,9 @@ interface OrganizationAPI {
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Organization deleted."),
         ApiResponse(code = 204, message = "Organization not found."),
-        ApiResponse(code = 500, message = "Internal Server error."),
         ApiResponse(code = 401, message = "Unauthorized to perform this operation."),
-        ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
+        ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation."),
+        ApiResponse(code = 500, message = "Internal Server error.")
     ])
     @DeleteMapping("/{id}")
     fun deleteOrganization(@ApiParam(name = "organization", type = "Long", value = "The id of a organization to retrieve", required = true)
