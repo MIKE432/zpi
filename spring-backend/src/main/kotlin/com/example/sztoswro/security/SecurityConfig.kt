@@ -25,7 +25,14 @@ class WebSecurityConfig(val customUserDetails: CustomUserDetailsService) : WebSe
                 .antMatchers("/" ).permitAll()
                 .anyRequest().permitAll()
               //  .anyRequest().authenticated()
-                .and().httpBasic()
+                .and()
+                .httpBasic()
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/perform_login/success")
+                .and()
+                .logout()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
     override fun configure(auth: AuthenticationManagerBuilder) {
