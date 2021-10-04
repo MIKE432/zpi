@@ -128,7 +128,7 @@ export const RegisterOrganizationPage: FC = () => {
           isVisible={activeStep === 2}
           register={register}
         />
-        <PreviewRegisterOrganizationSection isVisible={activeStep === 2} />
+        <PreviewRegisterOrganizationSection isVisible={activeStep === 3} />
       </form>
 
       <StyledDivRow>

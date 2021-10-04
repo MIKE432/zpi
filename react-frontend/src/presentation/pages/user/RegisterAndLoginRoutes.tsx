@@ -1,156 +1,50 @@
-import {
-  useHistory,
-  useLocation,
-  useRouteMatch,
-  withRouter
-} from 'react-router-dom';
+import { useHistory, useRouteMatch, withRouter } from 'react-router-dom';
 import {
   AnimatedRoutes,
   RouteTransition
 } from '../../../infrastructure/components/AnimatedRoutes/AnimatedRoutes';
 import React from 'react';
-import { LoginAbout, LoginPage } from './LoginPage';
-import { RegisterAbout, RegisterPage } from './RegisterPage';
+import { LoginPage } from './LoginPage';
+import { RegisterPage } from './RegisterPage';
 import {
-  withBlur,
-  withModal
-} from '../../../infrastructure/components/Wrappers/Wrappers';
-import styled from 'styled-components';
-import { Button } from '@material-ui/core';
-
-export interface SpecificAbout {
-  location: string;
-}
-
-const RegisterAndLoginModuleContainer = withBlur(styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  background-image: url(https://source.unsplash.com/Q7PclNhVRI0);
-  width: 100vw;
-  overflow: hidden;
-`);
-
-const RegisterAndLoginPageContainer = styled.div`
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  width: 50vw;
-  padding: 0 20%;
-
-  @media (max-width: 768px) {
-    justify-content: center;
-
-    width: 100vw;
-    padding: 1%;
-  }
-`;
-
-const RegisterAndLoginAbout = styled.div`
-  display: flex;
-  position: sticky;
-  flex-direction: column;
-  color: white;
-  justify-content: center;
-  align-items: center;
-  width: 50vw;
-  height: 100vh;
-  background: rgb(27, 22, 110);
-  background: linear-gradient(
-    90deg,
-    rgba(27, 22, 110, 1) 16%,
-    rgba(18, 85, 158, 1) 60%,
-    rgba(0, 212, 255, 0) 100%
-  );
-  transition: width 2s;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const LoginMenu = withModal(
-  styled.div`
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: max-content;
-
-    @media (max-width: 768px) {
-      justify-content: space-between;
-      margin: 0 auto;
-    }
-  `,
-  {
-    radius: 20,
-    padding: 15,
-    position: 'static',
-    color: {
-      red: 255,
-      green: 255,
-      blue: 255,
-      opacity: 0.8
-    }
-  }
-);
-
-const LoginMenuContainer = styled.div`
-  width: max-content;
-  justify-content: flex-start;
-  padding: 10px;
-  align-items: center;
-  z-index: 10;
-  height: max-content;
-  position: fixed;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    justify-content: center;
-  }
-`;
+  RegisterAndLoginAboutContainerStyled,
+  RegisterAndLoginModuleContainerStyled,
+  RegisterAndLoginPageContainerStyled
+} from './RegisterAndLoginRoutes.style';
+import {
+  RegisterAndLoginAbout,
+  RegisterAndLoginAboutProps
+} from './RegisterAndLoginAbout';
+import { LoginTopBar } from './LoginTopBar';
 
 const About = withRouter(() => {
-  const location = useLocation();
+  const history = useHistory();
+  console.log(history);
+  const registerAboutProps: RegisterAndLoginAboutProps = {
+    title: 'Zarejestruj się',
+    subtitle: 'I poczuj jak łatwo zarządzać organizacją studencką!',
+    onClick: () => history.push('/user/login'),
+    isVisible: history.location.pathname === '/user/register',
+    buttonText: 'Zaloguj się',
+    additionalText: 'Masz już konto?'
+  };
+
+  const loginAboutProps: RegisterAndLoginAboutProps = {
+    title: 'Zaloguj się',
+    subtitle: 'I poczuj jak łatwo zarządzać organizacją studencką!',
+    onClick: () => history.push('/user/register'),
+    isVisible: history.location.pathname === '/user/login',
+    buttonText: ' Zarejestruj się',
+    additionalText: 'Nie masz jeszcze konta?'
+  };
 
   return (
     <div>
-      <RegisterAbout location={location.pathname} />
-      <LoginAbout location={location.pathname} />
+      <RegisterAndLoginAbout {...registerAboutProps} />
+      <RegisterAndLoginAbout {...loginAboutProps} />
     </div>
   );
 });
-
-const LoginTopBar = () => {
-  const history = useHistory();
-  return (
-    <LoginMenuContainer>
-      <LoginMenu>
-        <Button
-          onClick={() => {
-            history.push('/');
-          }}
-        >
-          Main
-        </Button>
-        <Button
-          onClick={() => {
-            history.push('/user/login');
-          }}
-        >
-          Login
-        </Button>
-        <Button
-          onClick={() => {
-            history.push('/user/register');
-          }}
-        >
-          <span>Register</span>
-        </Button>
-      </LoginMenu>
-    </LoginMenuContainer>
-  );
-};
 
 export const RegisterAndLoginRoutes = withRouter(({ location }) => {
   const { path } = useRouteMatch();
@@ -158,23 +52,23 @@ export const RegisterAndLoginRoutes = withRouter(({ location }) => {
   return (
     <>
       <LoginTopBar />
-      <RegisterAndLoginModuleContainer>
-        <RegisterAndLoginAbout>
+      <RegisterAndLoginModuleContainerStyled>
+        <RegisterAndLoginAboutContainerStyled>
           <About />
-        </RegisterAndLoginAbout>
+        </RegisterAndLoginAboutContainerStyled>
         <AnimatedRoutes exitBeforeEnter initial={false}>
           <RouteTransition exact={false} path={`${path}/login`} slide={150}>
-            <RegisterAndLoginPageContainer>
+            <RegisterAndLoginPageContainerStyled>
               <LoginPage />
-            </RegisterAndLoginPageContainer>
+            </RegisterAndLoginPageContainerStyled>
           </RouteTransition>
           <RouteTransition exact={false} path={`${path}/register`} slide={150}>
-            <RegisterAndLoginPageContainer>
+            <RegisterAndLoginPageContainerStyled>
               <RegisterPage />
-            </RegisterAndLoginPageContainer>
+            </RegisterAndLoginPageContainerStyled>
           </RouteTransition>
         </AnimatedRoutes>
-      </RegisterAndLoginModuleContainer>
+      </RegisterAndLoginModuleContainerStyled>
     </>
   );
 });
