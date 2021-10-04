@@ -1,6 +1,5 @@
 package com.example.sztoswro.organization
 
-import com.example.sztoswro.member.MemberDTO
 import io.swagger.annotations.*
 import org.springframework.web.bind.annotation.*
 
@@ -14,15 +13,16 @@ interface OrganizationAPI {
         ApiResponse(code = 200, message = "Organizations found."),
         ApiResponse(code = 204, message = "No organizations found."),
         ApiResponse(code = 500, message = "Internal server error.")])
-    @GetMapping("/")
+    @GetMapping("")
     fun getAll(): List<OrganizationDTO>
 
-    @ApiOperation(value = "Get all organizations", response = OrganizationDTO::class)
+    @ApiOperation(value = "Get organization", response = OrganizationDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Organization found."),
         ApiResponse(code = 204, message = "Organization not found."),
         ApiResponse(code = 500, message = "Internal server error.")])
     @GetMapping("/{id}")
+    @ResponseBody
     fun getOrganization(@ApiParam(name = "organizationId", type = "Long", value = "The id of a organization to retrieve", required = true)
                         @PathVariable id: Long): OrganizationDTO
 
@@ -33,7 +33,7 @@ interface OrganizationAPI {
         ApiResponse(code = 401, message = "Unauthorized to perform this operation."),
         ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
     ])
-    @PostMapping("/")
+    @PostMapping("")
     fun addOrganization(@RequestBody organizationDTO: OrganizationDTO)
 
     @ApiOperation(value = "Update organization")
@@ -44,7 +44,7 @@ interface OrganizationAPI {
         ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
     ])
     @PutMapping("/{id}")
-    fun updateOrganization(@ApiParam(name = "organizationId", type = "Long", value = "The id of a organization to retrieve", required = true)
+    fun updateOrganization(@ApiParam(name = "organizationId", type = "Long", value = "The id of a organization to update", required = true)
                            @PathVariable id: Long, @RequestBody organizationDTO: OrganizationDTO)
 
     @ApiOperation(value = "Delete organization with given id")

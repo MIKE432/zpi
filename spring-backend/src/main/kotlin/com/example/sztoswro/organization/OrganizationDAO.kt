@@ -7,11 +7,10 @@ import javax.persistence.*
 data class OrganizationDAO (
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     var id: Long,
     var name: String,
     var email: String,
-    val about: String,
+    var about: String,
     var type: String,
     var careProvider: String,
     val registerFaculty: String,
@@ -31,4 +30,13 @@ data class OrganizationDAO (
     )
 
     constructor() : this(1, "hej", "ho", "hej", "ho", "hej", "sokoly", "omijajcie", "gory lasy doły")
+
+    fun update(updateData: OrganizationDAO){
+        this.name = updateData.name;
+        this.email = updateData.email;
+        this.about = updateData.about;
+        this.type = updateData.type;
+        this.careProvider = updateData.careProvider;
+    }
+
 }
