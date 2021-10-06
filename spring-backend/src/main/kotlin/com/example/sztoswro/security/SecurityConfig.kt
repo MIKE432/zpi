@@ -8,17 +8,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 @EnableWebSecurity
-class WebSecurityConfig(val customUserDetails: CustomUserDetailsService) : WebSecurityConfigurerAdapter() {
+class WebSecurityConfig(val customUserDetails: CustomUserDetailsService,
+                        private val passwordEncoderAndMatcher: PasswordEncoder
+) : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/v2/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
+//                .antMatchers("/v2/**").permitAll()
+//                .antMatchers("/webjars/**").permitAll()
+//                .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/signup").permitAll()
@@ -29,21 +32,27 @@ class WebSecurityConfig(val customUserDetails: CustomUserDetailsService) : WebSe
                 .httpBasic()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/perform_login/success")
+//                .loginProcessingUrl("/perform_login")
+//                .defaultSuccessUrl("/perform_login/success")
                 .and()
                 .logout()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
+
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.inMemoryAuthentication()
                 .withUser("user")
                 .password(BCryptPasswordEncoder().encode("password"))
                 .authorities(emptyList())
                 .and()
-                .passwordEncoder(BCryptPasswordEncoder())
+                .passwordEncoder(passwordEncoderAndMatcher)
                 .and()
                 .userDetailsService(customUserDetails)
-                .passwordEncoder(BCryptPasswordEncoder())
+                .passwordEncoder(passwordEncoderAndMatcher)
     }
+
+//    override fun configure(auth: AuthenticationManagerBuilder) {
+//        auth.userDetailsService(customUserDetails)
+//                .passwordEncoder(passwordEncoderAndMatcher)
+//    }
 }
