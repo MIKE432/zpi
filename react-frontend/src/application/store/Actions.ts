@@ -1,4 +1,6 @@
 import { createAction, PayloadActionCreator } from '@reduxjs/toolkit';
+import { LoginInputs } from '../../presentation/pages/user/LoginPage';
+import { UserResponse } from '../types/APITypes';
 
 export function createAsyncAction<
   RequestPayload,
@@ -25,3 +27,9 @@ export interface AsyncActionCreator<
   success: PayloadActionCreator<SuccessPayload>;
   failure: PayloadActionCreator<FailurePayload>;
 }
+
+export const loginUser = createAsyncAction<LoginInputs, UserResponse, Error>(
+  'LOGIN_USER',
+  'LOGIN_USER_SUCCESS',
+  'LOGIN_USER_FAILURE'
+);

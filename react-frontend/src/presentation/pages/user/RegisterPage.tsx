@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { registerFormSchema } from '../../../application/formSchemas/RegisterAndLoginPageSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Scrollable } from '../../../infrastructure/components/Wrappers/Wrappers.style';
+import { useUser } from '../../../application/hooks/useUser';
 
 interface Inputs {
   firstName: string;
@@ -20,12 +21,12 @@ const RegisterForm = () => {
     handleSubmit,
     formState: { errors }
   } = useForm({ resolver: yupResolver(registerFormSchema) });
-
+  const { setUser, user } = useUser();
   const onSubmit: SubmitHandler<Inputs> = (data: any) => console.log(data);
 
   return (
     <>
-      <h2>Zarejestruj się</h2>
+      <h2>Zarejestruj się{user?.name}</h2>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Scrollable maxHeight="80vh">
           <TextField

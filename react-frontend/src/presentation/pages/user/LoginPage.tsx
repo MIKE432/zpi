@@ -1,22 +1,28 @@
 import { Button, TextField } from '@material-ui/core';
-import React from 'react';
+import React, { FC } from 'react';
 import { withModal } from '../../../infrastructure/components/Wrappers/Wrappers';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginFormSchema } from '../../../application/formSchemas/RegisterAndLoginPageSchemas';
+import { useUser } from '../../../application/hooks/useUser';
 
-interface Inputs {
+export interface LoginInputs {
   email: string;
   password: string;
 }
 
-const LoginPageComponent = () => {
+const LoginPageComponent: FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm({ resolver: yupResolver(loginFormSchema) });
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const { setUser, user } = useUser();
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+    console.log(data);
+    setUser({ name: data.email });
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <h2>Zaloguj się</h2>
