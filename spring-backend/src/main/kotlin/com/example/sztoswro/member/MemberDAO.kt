@@ -1,6 +1,9 @@
 package com.example.sztoswro.member
 
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
 
 @Entity
 data class MemberDAO(
@@ -12,12 +15,12 @@ data class MemberDAO(
         var email: String,
         val username: String,
         var password: String,
-        @ElementCollection
-        var roles: MutableSet<String>
+        var roles: Roles,
+
 //        @ManyToMany
 //        var organizations: MutableSet<OrganizationDAO>,
 
 ) {
-        constructor(): this(1, "szymon", "nieszymon", "mozeszymon@mozenieszymon.com", "userszymon", "pass", mutableSetOf<String>())
-        constructor(mem: MemberDTO): this(mem.id, mem.name, mem.lastName, mem.email, mem.username, mem.password, mutableSetOf<String>())
+        constructor(): this(1, "szymon", "nieszymon", "mozeszymon@mozenieszymon.com", "userszymon", "pass", Roles())
+        constructor(mem: MemberDTO): this(mem.id, mem.name, mem.lastName, mem.email, mem.username, mem.password, Roles())
 }

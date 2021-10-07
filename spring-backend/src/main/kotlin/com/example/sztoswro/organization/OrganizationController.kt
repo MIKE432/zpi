@@ -1,5 +1,6 @@
 package com.example.sztoswro.organization
 
+import com.example.sztoswro.member.RoleLevel
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -23,6 +24,10 @@ class OrganizationController(val organizationService: OrganizationService) : Org
 
     override fun deleteOrganization(id: Long) {
         organizationService.deleteOrganization(id)
+    }
+
+    override fun addOrganizationRole(id: Long, roleName: String, roleLevel: RoleLevel) {
+        organizationService.addRole(id, roleName, roleLevel)
     }
 
 }
