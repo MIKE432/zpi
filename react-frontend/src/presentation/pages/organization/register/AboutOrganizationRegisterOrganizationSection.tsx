@@ -5,18 +5,13 @@ import {
   MenuItem,
   Select,
   TextField
-} from '@material-ui/core';
-import {
-  RegisterOrganizationSectionProps,
-  useRegisterOrganizationFormStyles
-} from './RegisterOrganizationPage';
+} from '@mui/material';
+import { RegisterOrganizationSectionProps } from './RegisterOrganizationPage';
 import { Variants } from 'framer-motion';
 import { TabsFormWrapper } from '../../../../infrastructure/components/TabsForm';
 
 export const AboutOrganizationRegisterOrganizationSection: FC<RegisterOrganizationSectionProps> =
   ({ isVisible, register }) => {
-    const classes = useRegisterOrganizationFormStyles();
-
     const variants: Variants = {
       visible: {
         opacity: 1,
@@ -39,11 +34,10 @@ export const AboutOrganizationRegisterOrganizationSection: FC<RegisterOrganizati
       >
         <TextField
           variant={'outlined'}
-          className={classes.formControl}
           label="Nazwa organizacji"
           {...register('organizationName')}
         />
-        <FormControl variant="outlined" className={classes.formControl}>
+        <FormControl variant="outlined">
           <InputLabel id="organization-type">Typ organizacji</InputLabel>
           <Select
             defaultValue=""
@@ -60,13 +54,11 @@ export const AboutOrganizationRegisterOrganizationSection: FC<RegisterOrganizati
         </FormControl>
         <TextField
           variant={'outlined'}
-          className={classes.formControl}
           label="E-mail organizacji"
           {...register('organizationEmail')}
         />
         <TextField
           variant={'outlined'}
-          className={classes.formControl}
           label="Opis"
           size={'medium'}
           multiline={true}

@@ -1,10 +1,12 @@
 package com.example.sztoswro.member
 
 import io.swagger.annotations.*
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @Api(value = "System Zarządzania Twoją Organizacją Studencką", description = "Operation management of Members")
-
+@CrossOrigin
 @RequestMapping("/member")
 interface MemberAPI {
     @ApiOperation(value = "Get all members", response = Iterable::class)

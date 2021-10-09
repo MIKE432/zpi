@@ -4,7 +4,7 @@ import {
   ProgressStepper,
   StepperStep
 } from '../../../../infrastructure/components/ProgressBars/ProgressSteper';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button } from '@mui/material';
 import {
   CenteredContent,
   StyledDivRow
@@ -57,28 +57,6 @@ const defaultValues: Inputs = {
   activitiesArea: '',
   facultiesArea: ''
 };
-
-export const useRegisterOrganizationFormStyles = makeStyles((theme) => ({
-  formControl: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    width: '100%',
-    boxSizing: 'border-box'
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2)
-  },
-  root: {
-    width: '100%'
-  },
-  button: {
-    marginRight: theme.spacing(1)
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  }
-}));
 
 export interface RegisterOrganizationSectionProps {
   isVisible: boolean;

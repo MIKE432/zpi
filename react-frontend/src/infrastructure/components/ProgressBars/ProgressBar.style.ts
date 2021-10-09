@@ -1,21 +1,8 @@
-import { LinearProgress, withStyles } from '@material-ui/core';
+import { LinearProgress, withStyles } from '@mui/material';
 import { StepperStep } from './ProgressSteper';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
-export const BorderLinearProgress = withStyles((theme) => ({
-  root: {
-    height: 10,
-    borderRadius: 5
-  },
-  colorPrimary: {
-    backgroundColor:
-      theme.palette.grey[theme.palette.type === 'light' ? 200 : 700]
-  },
-  bar: {
-    borderRadius: 5,
-    backgroundColor: '#1a90ff'
-  }
-}))(LinearProgress);
+export const BorderLinearProgress = LinearProgress;
 
 export interface ProgressBarProps {
   steps: StepperStep[];

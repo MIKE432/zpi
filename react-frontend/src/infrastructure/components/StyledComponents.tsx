@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const StyledDivRow = styled.div`
   display: flex;
@@ -19,3 +19,7 @@ export const CenteredContent = styled.div<{ width?: string }>`
     width: 100%;
   }
 `;
+
+export interface WithClassName {
+  className?: any;
+}

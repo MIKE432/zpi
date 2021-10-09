@@ -6,6 +6,10 @@ data class MemberDTO(val id: Long,
                      val email: String,
                      val username: String,
                      val password: String) {
-    constructor(memberDAO: MemberDAO): this(memberDAO.id, memberDAO.name, memberDAO.lastName, memberDAO.email, memberDAO.username, memberDAO.password)
-
+    constructor(memberDAO: MemberDAO) : this(memberDAO.id, memberDAO.name, memberDAO.lastName, memberDAO.email, memberDAO.username, memberDAO.password)
 }
+
+data class LoginCredentials(
+        val username: String,
+        val password: String
+)

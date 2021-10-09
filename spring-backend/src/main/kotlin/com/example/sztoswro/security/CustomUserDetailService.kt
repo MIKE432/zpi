@@ -2,25 +2,27 @@ package com.example.sztoswro.security
 
 import com.example.sztoswro.member.MemberService
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 
-class CustomUserDetails (
-        private val aUsername:String,
-        private val aPassword:String, ) : UserDetails {
+class CustomUserDetails(
+        private val aEmail: String,
+        private val aPassword: String,
+) : UserDetails {
 
 
     override fun isEnabled(): Boolean = true
 
-    override fun getUsername(): String = aUsername
+    override fun getUsername(): String = aEmail
 
     override fun isCredentialsNonExpired(): Boolean = true
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
+        return arrayListOf(SimpleGrantedAuthority("ROLE_USER"))
     }
 
     override fun getPassword(): String = aPassword
@@ -36,12 +38,12 @@ class CustomUserDetailsService(
         val users: MemberService
 ) : UserDetailsService {
 
-    override fun loadUserByUsername(username: String?): UserDetails {
+    override fun loadUserByUsername(email: String?): UserDetails {
 
-        username?.let {
-            val userDAO = users.findMember(it)
-            return CustomUserDetails(userDAO.username, userDAO.password)
+        email?.let {
+            val userDAO = users.getByEmail(it)
+            return CustomUserDetails(userDAO.email, userDAO.password)
         }
-        throw UsernameNotFoundException(username)
+        throw UsernameNotFoundException(email)
     }
 }

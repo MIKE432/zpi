@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { WithBlur, WithModal } from '../../../application/types/WrapperTypes';
-import { Blur, BlurOptions, Modal, ModalOptions } from './Wrappers.style';
+import { Blur, BlurOptions, ModalOptions, ModalStyled } from './Wrappers.style';
+import { WithClassName } from '../StyledComponents';
+import { Paper } from '@mui/material';
 
 export const defaultBlurOptions: BlurOptions = {
   blur: 8
@@ -28,11 +30,6 @@ export const defaultModalOptions: ModalOptions = {
   position: 'static'
 };
 
-export const withModal: WithModal =
-  (Component: any, modalOptions: ModalOptions = defaultModalOptions) =>
-  ({ children }) =>
-    (
-      <Modal {...modalOptions}>
-        <Component>{children}</Component>
-      </Modal>
-    );
+export const Modal: FC<WithClassName> = ({ children, className }) => {
+  return <Paper className={className}>{children}</Paper>;
+};

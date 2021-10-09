@@ -5,24 +5,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class MemberService(val memberTmpRepo: MemberTmpRepo){//(val members: MemberRepository) {
+class MemberService(val memberRepository: MemberRepository) {
 
-    fun getAll(): Iterable<MemberDAO> { return memberTmpRepo.getAll()} //members.findAll()
-
-    fun getMember(id: Long): MemberDAO {
-        return memberTmpRepo.findById(id) ?: throw NoContentException("Member with id = {id} not found.")
+    fun getAll(): Iterable<MemberDAO> {
+        return memberRepository.findAll()
     }
 
-    fun findMember(username: String): MemberDAO {
-        return memberTmpRepo.findByUsername(username) ?: throw NoContentException("Member with id = {id} not found.")
+    fun getMember(id: Long): MemberDAO {
+        return memberRepository.findById(id).orElseThrow { throw NoContentException("Member with id = {id} not found.") }
+    }
+
+    fun getByEmail(username: String): MemberDAO {
+        return memberRepository.getMemberDAOByEmail(username).orElseThrow { throw NoContentException("Member with id = {id} not found.") }
     }
 
     fun addMember(memberDAO: MemberDAO) {
-        val aUser = memberTmpRepo.findById(memberDAO.id)
+        val aUser = memberRepository.findById(memberDAO.id)
 
-        if ( aUser == null ) {
+        if (aUser.isEmpty) {
             memberDAO.password = BCryptPasswordEncoder().encode(memberDAO.password)
-            memberTmpRepo.save(memberDAO)
+            memberRepository.save(memberDAO)
         }
     }
 }

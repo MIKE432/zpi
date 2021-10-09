@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { CenteredContent } from '../../../infrastructure/components/StyledComponents';
 import { RegisterOrganizationPage } from './register/RegisterOrganizationPage';
+import { Container } from '@mui/material';
 
 export const RegisterOrganizationRoutes = () => {
   const { path } = useRouteMatch();
@@ -12,9 +13,9 @@ export const RegisterOrganizationRoutes = () => {
         <h3>Please select a topic.</h3>
       </Route>
       <Route path={`${path}/register`}>
-        <CenteredContent width="40%">
+        <Container maxWidth="md">
           <RegisterOrganizationPage />
-        </CenteredContent>
+        </Container>
       </Route>
     </Switch>
   );

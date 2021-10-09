@@ -1,16 +1,11 @@
 import { FC } from 'react';
-import {
-  RegisterOrganizationSectionProps,
-  useRegisterOrganizationFormStyles
-} from './RegisterOrganizationPage';
+import { RegisterOrganizationSectionProps } from './RegisterOrganizationPage';
 import { Variants } from 'framer-motion';
 import { TabsFormWrapper } from '../../../../infrastructure/components/TabsForm';
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
 
 export const AdditionalInfoRegisterOrganizationSection: FC<RegisterOrganizationSectionProps> =
   ({ isVisible, register }) => {
-    const classes = useRegisterOrganizationFormStyles();
-
     const variants: Variants = {
       visible: {
         opacity: 1,
@@ -33,7 +28,6 @@ export const AdditionalInfoRegisterOrganizationSection: FC<RegisterOrganizationS
       >
         <TextField
           variant={'outlined'}
-          className={classes.formControl}
           label="Opiekun"
           {...register('careProvider')}
         />

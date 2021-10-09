@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
 import { RGBAColor } from '../../../application/types/UITypes';
 
 export interface BlurOptions {
@@ -15,21 +15,26 @@ export const Blur = styled.div<BlurOptions>`
   align-items: center;
 `;
 
-export const Modal = styled.div<any>`
-  padding: ${(props) => props.padding}px;
-  background: ${(props) =>
-    props.color &&
-    css`rgba(${props.color.red}, ${props.color.green}, ${props.color.blue}, ${props.color.opacity})`};
-  border-radius: ${(props) => props.radius}px;
-  margin: ${(props) => props.margin ?? '0 auto'}px;
-  position: ${(props) => props.position ?? 'inherit'};
-  z-index: ${(props) => props.zIndex ?? 1};
-  max-width: ${(props) => props.maxWidth ?? 'none'};
-  max-height: ${(props) => props.maxHeight ?? 'none'};
+export const defaultModalOptions: ModalOptions = {
+  radius: 20,
+  color: {
+    red: 255,
+    green: 255,
+    blue: 255,
+    opacity: 0.8
+  },
+  padding: 20,
+  margin: 0,
+  position: 'static'
+};
 
+export const ModalStyled = styled.div<any>`
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 20px;
   @media (max-width: 768px) {
     flex-direction: column;
-    margin: ${(props) => props.margin * 2}px;
+    margin: 20px;
   }
 `;
 

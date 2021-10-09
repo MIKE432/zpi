@@ -1,11 +1,16 @@
-import { withModal } from '../../../infrastructure/components/Wrappers/Wrappers';
-import { Button, TextField } from '@material-ui/core';
-import React from 'react';
+import {
+  defaultModalOptions,
+  Modal
+} from '../../../infrastructure/components/Wrappers/Wrappers';
+import { Button, TextField } from '@mui/material';
+import React, { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { registerFormSchema } from '../../../application/formSchemas/RegisterAndLoginPageSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Scrollable } from '../../../infrastructure/components/Wrappers/Wrappers.style';
 import { useUser } from '../../../application/hooks/useUser';
+import styled from '@emotion/styled';
+import { LoginAndRegisterFormStyled } from './RegisterAndLoginRoutes.style';
 
 interface Inputs {
   firstName: string;
@@ -103,4 +108,8 @@ const RegisterForm = () => {
   );
 };
 
-export const RegisterPage = withModal(RegisterForm);
+export const RegisterPage: FC = () => (
+  <LoginAndRegisterFormStyled>
+    <RegisterForm />
+  </LoginAndRegisterFormStyled>
+);

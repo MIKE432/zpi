@@ -1,4 +1,4 @@
-import { Step, StepLabel, Stepper, Typography } from '@material-ui/core';
+import { Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import { StyledProgressStepper } from './ProgressStepper.style';
 

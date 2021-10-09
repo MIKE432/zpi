@@ -3,6 +3,7 @@ package com.example.sztoswro.member
 import javax.persistence.*
 
 @Entity
+@Table(name = "member")
 data class MemberDAO(
         @Id
         @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -18,6 +19,6 @@ data class MemberDAO(
 //        var organizations: MutableSet<OrganizationDAO>,
 
 ) {
-        constructor(): this(1, "szymon", "nieszymon", "mozeszymon@mozenieszymon.com", "userszymon", "pass", mutableSetOf<String>())
+        constructor(): this(1, "", "", "", "", "", mutableSetOf<String>())
         constructor(mem: MemberDTO): this(mem.id, mem.name, mem.lastName, mem.email, mem.username, mem.password, mutableSetOf<String>())
 }
