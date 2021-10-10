@@ -14,8 +14,8 @@ class MemberTmpRepo(val members: MutableSet<MemberDAO>) {
         return members.find { memberDAO -> memberDAO.id == id }
     }
 
-    fun findByUsername(username: String): MemberDAO? {
-        return members.find { memberDAO -> memberDAO.username.equals(username) }
+    fun findByEmail(email: String): MemberDAO? {
+        return members.find { memberDAO -> memberDAO.email.equals(email) }
     }
 
     fun getAll(): Iterable<MemberDAO> = members

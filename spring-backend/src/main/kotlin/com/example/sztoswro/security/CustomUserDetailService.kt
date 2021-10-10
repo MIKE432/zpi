@@ -36,12 +36,12 @@ class CustomUserDetailsService(
         val users: MemberService
 ) : UserDetailsService {
 
-    override fun loadUserByUsername(username: String?): UserDetails {
+    override fun loadUserByUsername(email: String?): UserDetails {
 
-        username?.let {
+        email?.let {
             val userDAO = users.findMember(it)
-            return CustomUserDetails(userDAO.username, userDAO.password)
+            return CustomUserDetails(userDAO.email, userDAO.password)
         }
-        throw UsernameNotFoundException(username)
+        throw UsernameNotFoundException(email)
     }
 }

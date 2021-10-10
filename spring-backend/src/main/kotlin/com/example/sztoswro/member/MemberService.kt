@@ -13,8 +13,8 @@ class MemberService(val memberTmpRepo: MemberTmpRepo){//(val members: MemberRepo
         return memberTmpRepo.findById(id) ?: throw NoContentException("Member with id = {id} not found.")
     }
 
-    fun findMember(username: String): MemberDAO {
-        return memberTmpRepo.findByUsername(username) ?: throw NoContentException("Member with id = {id} not found.")
+    fun findMember(email: String): MemberDAO {
+        return memberTmpRepo.findByEmail(email) ?: throw NoContentException("Member with id = {id} not found.")
     }
 
     fun addMember(memberDAO: MemberDAO) {

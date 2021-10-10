@@ -44,17 +44,5 @@ interface MemberAPI {
         ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
     ])
     @PostMapping("/")
-    fun addMember(@RequestBody memberDTO: MemberDTO)
-
-//    @ApiOperation(value = "Get member's organizations", response = Iterable::class)
-//    @ApiResponses(value = [
-//        ApiResponse(code = 200, message = "Organizations found."),
-//        ApiResponse(code = 204, message = "Organizations not found."),
-//        ApiResponse(code = 500, message = "Internal server error."),
-//        ApiResponse(code = 401, message = "Unauthorized to perform this operation."),
-//        ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
-//    ])
-//    @GetMapping("/{id}/organizations")
-//    fun getOrganizations(@ApiParam(name = "memberId", type = "Long", value = "The id of a member to retrieve", required = true)
-//                         @PathVariable id: Long): MutableSet<OrganizationDTO>
+    fun addMember(@RequestBody memberDTO: MemberDTO, @RequestBody password: String)
 }
