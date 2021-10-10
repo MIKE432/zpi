@@ -2,14 +2,13 @@ package com.example.sztoswro.config
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.TokenExpiredException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import java.io.IOException
 import javax.servlet.FilterChain
-import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -20,13 +19,17 @@ class JwtAuthorizationFilter(authManager: AuthenticationManager, private val use
     private val secret = "ad7a6ds87a6da8dasd76asd876ads8ad7a6ds8a6sasda"
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-        val authentication = getAuthentication(request)
-        if (authentication == null) {
+        try {
+            val authentication = getAuthentication(request)
+            if (authentication == null) {
+                filterChain.doFilter(request, response)
+                return
+            }
+            SecurityContextHolder.getContext().authentication = authentication
             filterChain.doFilter(request, response)
-            return
+        } catch (e: TokenExpiredException) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.message)
         }
-        SecurityContextHolder.getContext().authentication = authentication
-        filterChain.doFilter(request, response)
     }
 
     private fun getAuthentication(request: HttpServletRequest): UsernamePasswordAuthenticationToken? {
@@ -37,7 +40,7 @@ class JwtAuthorizationFilter(authManager: AuthenticationManager, private val use
                     .verify(token.replace(TOKEN_PREFIX, ""))
                     .subject
             if (userName != null) {
-                val userDetails = userDetailsService!!.loadUserByUsername(userName) // 7
+                val userDetails = userDetailsService!!.loadUserByUsername(userName)
                 return UsernamePasswordAuthenticationToken(userDetails.username, null, userDetails.authorities) // 8
             }
         }

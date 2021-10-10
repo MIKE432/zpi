@@ -1,3 +1,4 @@
 export const QueryKeys = {
-  userLoginQueryKey: 'USER_LOGIN'
+  userLogin: 'USER_LOGIN',
+  userCurrent: 'USER_CURRENT'
 };

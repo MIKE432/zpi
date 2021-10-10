@@ -1,3 +1,6 @@
+export const serverUrl = 'http://localhost:8080';
+
 export const ApiUrls = {
-  user: '/api/user'
+  member: '/member/',
+  login: '/login'
 };

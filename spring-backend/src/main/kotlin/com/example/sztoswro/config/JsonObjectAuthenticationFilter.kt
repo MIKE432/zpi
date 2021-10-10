@@ -1,5 +1,6 @@
 package com.example.sztoswro.config
 
+import com.auth0.jwt.JWT
 import com.example.sztoswro.member.LoginCredentials
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -7,9 +8,10 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import java.io.BufferedReader
 import java.io.IOException
-import java.lang.StringBuilder
+import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+
 
 class JsonObjectAuthenticationFilter(private val objectMapper: ObjectMapper) : UsernamePasswordAuthenticationFilter() {
 
@@ -29,7 +31,7 @@ class JsonObjectAuthenticationFilter(private val objectMapper: ObjectMapper) : U
     private fun getTokenFromRequest(request: HttpServletRequest?): UsernamePasswordAuthenticationToken {
         val content = getContentFromRequest(request)
         val authRequest = objectMapper.readValue(content, LoginCredentials::class.java)
-        return UsernamePasswordAuthenticationToken(authRequest.username, authRequest.password)
+        return UsernamePasswordAuthenticationToken(authRequest.email, authRequest.password)
     }
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
@@ -41,5 +43,4 @@ class JsonObjectAuthenticationFilter(private val objectMapper: ObjectMapper) : U
             throw IllegalAccessError()
         }
     }
-
 }

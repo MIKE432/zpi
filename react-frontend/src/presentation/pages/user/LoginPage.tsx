@@ -1,10 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { Modal } from '../../../infrastructure/components/Wrappers/Wrappers';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginFormSchema } from '../../../application/formSchemas/RegisterAndLoginPageSchemas';
 import { useUser } from '../../../application/hooks/useUser';
 import { Button, TextField } from '@mui/material';
+import cookies from 'js-cookie';
+import { getCurrentUser } from '../../../application/api/user/UserLogin';
 
 export interface LoginInputs {
   email: string;
@@ -18,11 +20,18 @@ export const LoginPage: FC = () => {
     formState: { errors }
   } = useForm({ resolver: yupResolver(loginFormSchema) });
 
-  const { setUser, user } = useUser();
+  const { useLogin, getCurrentUserAndReload } = useUser();
+  const { mutate } = useLogin();
+
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
-    console.log(data);
-    setUser({ name: data.email });
+    mutate(data, {
+      onSuccess: async (data) => {
+        cookies.set('token', data.data.token);
+        await getCurrentUserAndReload();
+      }
+    });
   };
+
   return (
     <Modal>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>

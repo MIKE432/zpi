@@ -10,6 +10,6 @@ data class MemberDTO(val id: Long,
 }
 
 data class LoginCredentials(
-        val username: String,
-        val password: String
+    val email: String,
+    val password: String
 )

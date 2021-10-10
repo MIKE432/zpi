@@ -19,32 +19,34 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig(
-        val customUserDetails: CustomUserDetailsService,
-        private val objectMapper: ObjectMapper,
-        private val successHandler: RestAuthenticationSuccessHandler,
-        private val failureHandler: RestAuthenticationFailureHandler
+    val customUserDetails: CustomUserDetailsService,
+    private val objectMapper: ObjectMapper,
+    private val successHandler: RestAuthenticationSuccessHandler,
+    private val failureHandler: RestAuthenticationFailureHandler
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/v2/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/member").permitAll()
-                .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().httpBasic()
-                .and()
-                .addFilter(authenticationFilter())
-                .addFilter(JwtAuthorizationFilter(authenticationManager(), customUserDetails))
-                .exceptionHandling()
-                .authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                .and()
-                .headers().frameOptions().disable();
+            .csrf().disable()
+            .cors()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/v2/**").permitAll()
+            .antMatchers("/webjars/**").permitAll()
+            .antMatchers("/swagger-resources/**").permitAll()
+            .antMatchers("/swagger-ui.html").permitAll()
+            .antMatchers("/").permitAll()
+            .antMatchers("/member").permitAll()
+            .anyRequest().permitAll()
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().httpBasic()
+            .and()
+            .addFilter(authenticationFilter())
+            .addFilter(JwtAuthorizationFilter(authenticationManager(), customUserDetails))
+            .exceptionHandling()
+            .authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+            .and()
+            .headers().frameOptions().disable();
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
