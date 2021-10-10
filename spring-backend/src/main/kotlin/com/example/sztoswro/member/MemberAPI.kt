@@ -52,5 +52,5 @@ interface MemberAPI {
         ApiResponse(code = 500, message = "Internal Server error.")
     ])
     @PostMapping("/register")
-    fun register(@RequestBody memberDTO: MemberDTO, @RequestBody password: String)
+    fun register(@RequestBody memberDTO: MemberDTO)
 }

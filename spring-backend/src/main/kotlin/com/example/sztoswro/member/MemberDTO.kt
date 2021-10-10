@@ -1,6 +1,7 @@
 package com.example.sztoswro.member
 
 import org.jetbrains.annotations.NotNull
+import org.springframework.lang.Nullable
 import java.time.LocalDate
 import javax.persistence.ElementCollection
 
@@ -13,6 +14,8 @@ data class MemberDTO(
         var email: String,
         @NotNull
         var phoneNumber: String,
+        @Nullable
+        var password: String?,
         var faculty: String,
         var studYear: Int,
         var department: String,
@@ -32,6 +35,7 @@ data class MemberDTO(
             memberDAO.lastName,
             memberDAO.email,
             memberDAO.phoneNumber,
+            memberDAO.password,
             memberDAO.faculty,
             memberDAO.studYear,
             memberDAO.department,

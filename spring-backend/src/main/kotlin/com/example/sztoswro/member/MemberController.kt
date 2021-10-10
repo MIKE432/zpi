@@ -9,18 +9,20 @@ class MemberController(val memberService: MemberService): MemberAPI {
     }
 
     override fun getById(id: Long): MemberDTO {
-    return MemberDTO(memberService.getMember(id))
-}
+        val member = MemberDTO(memberService.getMember(id))
+        member.password = null
+        return member
+    }
 
     override fun deleteMember(id: Long): MemberDTO {
         TODO("Not yet implemented")
     }
 
     override fun addMember(memberDTO: MemberDTO, password: String) {
-        memberService.addMember(MemberDAO(memberDTO, password))
+        memberService.addMember(MemberDAO(memberDTO))
     }
 
-    override fun register(memberDTO: MemberDTO, password: String) {
-        memberService.registerMember(MemberDAO(memberDTO, password))
+    override fun register(memberDTO: MemberDTO) {
+        memberService.registerMember(MemberDAO(memberDTO))
     }
 }

@@ -60,13 +60,13 @@ data class MemberDAO(
                 emptyMap<Long, LocalDate>(),
                 mutableSetOf<String>())
 
-        constructor(mem: MemberDTO, password: String): this(
+        constructor(mem: MemberDTO): this(
                 1,
                 mem.name,
                 mem.lastName,
                 mem.email,
                 mem.phoneNumber,
-                password,
+                mem.password,
                 mem.faculty,
                 mem.studYear,
                 mem.department,
