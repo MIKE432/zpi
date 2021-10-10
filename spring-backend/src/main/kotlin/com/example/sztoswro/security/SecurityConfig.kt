@@ -1,9 +1,6 @@
 package com.example.sztoswro.security
 
-import com.example.sztoswro.login.JsonObjectAuthenticationFilter
-import com.example.sztoswro.login.JwtAuthorizationFilter
-import com.example.sztoswro.login.RestAuthenticationFailureHandler
-import com.example.sztoswro.login.RestAuthenticationSuccessHandler
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -28,8 +25,8 @@ class WebSecurityConfig(val customUserDetails: CustomUserDetailsService,
                         private val passwordEncoderAndMatcher: PasswordEncoder,
                         private val dataSource: DataSource,
                         private val objectMapper: ObjectMapper,
-                        private val successHandler: RestAuthenticationSuccessHandler,
-                        private val failureHandler: RestAuthenticationFailureHandler,
+//                        private val successHandler: RestAuthenticationSuccessHandler,
+//                        private val failureHandler: RestAuthenticationFailureHandler,
                         @Value("#{jwt.secret}") val secret: String
 ) : WebSecurityConfigurerAdapter() {
 
@@ -49,8 +46,8 @@ class WebSecurityConfig(val customUserDetails: CustomUserDetailsService,
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(authenticationFilter())
-                .addFilter(JwtAuthorizationFilter(authenticationManager(), userDetailsService(), secret))
+//                .addFilter(authenticationFilter())
+//                .addFilter(JwtAuthorizationFilter(authenticationManager(), userDetailsService(), secret))
                 .exceptionHandling()
                 .authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
     }
@@ -68,14 +65,14 @@ class WebSecurityConfig(val customUserDetails: CustomUserDetailsService,
                 .userDetailsService(customUserDetails)
                 .passwordEncoder(passwordEncoderAndMatcher)
     }
-
-    fun authenticationFilter(): JsonObjectAuthenticationFilter {
-        val authenticationFilter: JsonObjectAuthenticationFilter = JsonObjectAuthenticationFilter(objectMapper)
-        authenticationFilter.setAuthenticationSuccessHandler(successHandler)
-        authenticationFilter.setAuthenticationFailureHandler(failureHandler)
-        authenticationFilter.setAuthenticationManager(super.authenticationManager())
-        return authenticationFilter;
-    }
+//
+//    fun authenticationFilter(): JsonObjectAuthenticationFilter {
+//        val authenticationFilter: JsonObjectAuthenticationFilter = JsonObjectAuthenticationFilter(objectMapper)
+//        authenticationFilter.setAuthenticationSuccessHandler(successHandler)
+//        authenticationFilter.setAuthenticationFailureHandler(failureHandler)
+//        authenticationFilter.setAuthenticationManager(super.authenticationManager())
+//        return authenticationFilter;
+//    }
 
     @Bean
     fun userDetailsManager() :UserDetailsManager {

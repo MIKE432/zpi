@@ -1,8 +1,10 @@
-//package com.example.sztoswro.member
-//
-//import org.springframework.data.repository.CrudRepository
-//import java.util.*
-//
-//interface MemberRepository: CrudRepository<MemberDAO, Long> {
-//    fun findByUsername(username: String): Optional<MemberDAO>
-//}
+package com.example.sztoswro.member
+
+import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
+import java.util.*
+
+@Repository
+interface MemberRepository: CrudRepository<MemberDAO, Long> {
+    fun findByEmail(username: String): Optional<MemberDAO>
+}

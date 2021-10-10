@@ -5,6 +5,7 @@ import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
+@Table
 data class MemberDAO(
         @Id
         @GeneratedValue(strategy = GenerationType.SEQUENCE)

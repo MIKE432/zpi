@@ -12,7 +12,7 @@ interface MemberAPI {
         ApiResponse(code = 200, message = "Members found."),
         ApiResponse(code = 204, message = "No members found."),
         ApiResponse(code = 500, message = "Internal server error.")])
-    @GetMapping("/")
+    @GetMapping("")
     fun getAll(): List<MemberDTO>
 
     @ApiOperation(value = "Get member with given id", response = MemberDTO::class)
@@ -43,6 +43,14 @@ interface MemberAPI {
         ApiResponse(code = 401, message = "Unauthorized to perform this operation."),
         ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
     ])
-    @PostMapping("/")
+    @PostMapping("")
     fun addMember(@RequestBody memberDTO: MemberDTO, @RequestBody password: String)
+
+    @ApiOperation(value = "Register a member")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Member registered."),
+        ApiResponse(code = 500, message = "Internal Server error.")
+    ])
+    @PostMapping("/register")
+    fun register(@RequestBody memberDTO: MemberDTO, @RequestBody password: String)
 }
