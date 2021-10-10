@@ -7,7 +7,13 @@ import { UserProvider } from './application/store/UserProvider/UserProvider';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createTheme, Theme, ThemeProvider } from '@mui/material';
 
-const queryClient = new QueryClient();
+const queryClientOptions = {
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+};
 
 export enum ThemeVariant {
   LIGHT = 'light'
@@ -31,15 +37,13 @@ const ThemeProviderWrapper: FC = ({ children }) => {
 };
 
 ReactDOM.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
+  <ThemeProviderWrapper>
+    <QueryClientProvider client={new QueryClient(queryClientOptions)}>
       <UserProvider>
-        <ThemeProviderWrapper>
-          <App />
-        </ThemeProviderWrapper>
+        <App />
       </UserProvider>
     </QueryClientProvider>
-  </React.StrictMode>,
+  </ThemeProviderWrapper>,
   document.getElementById('root')
 );
 

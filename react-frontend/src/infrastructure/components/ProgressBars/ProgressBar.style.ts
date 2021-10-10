@@ -1,4 +1,4 @@
-import { LinearProgress, withStyles } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import { StepperStep } from './ProgressSteper';
 import styled from '@emotion/styled';
 

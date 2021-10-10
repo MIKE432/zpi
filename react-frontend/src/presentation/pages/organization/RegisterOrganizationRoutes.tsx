@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import { CenteredContent } from '../../../infrastructure/components/StyledComponents';
 import { RegisterOrganizationPage } from './register/RegisterOrganizationPage';
 import { Container } from '@mui/material';
 

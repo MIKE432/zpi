@@ -4,7 +4,7 @@ interface AuthHeaders {
   [headers: string]: string;
 }
 
-export const wrapWithAuthHeaders = (headers: any) => {
+export const wrapWithAuthHeaders = (headers: AuthHeaders) => {
   const authHeaders: any = {};
   const token: string | undefined = cookies.get('token');
   if (token) {

@@ -1,14 +1,13 @@
 import { useContext } from 'react';
 import { User, UserContext, UserCtx } from '../store/UserProvider/UserProvider';
 import {
-  useUserLoginMutation,
-  UserLoginRequestBody,
+  getCurrentUser,
   useCurrentUser,
-  UserLoginResponseBody,
-  getCurrentUser
+  useUserLoginMutation
 } from '../api/user/UserLogin';
 import { UseMutationResult, UseQueryResult } from 'react-query';
 import { AxiosError, AxiosResponse } from 'axios';
+import { UserLoginRequestBody, UserLoginResponseBody } from '../types/APITypes';
 
 export interface UseUserAdditionalProps {
   useLogin: () => UseMutationResult<

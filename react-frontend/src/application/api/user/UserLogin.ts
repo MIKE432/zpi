@@ -10,15 +10,10 @@ import { ApiUrls, serverUrl } from '../ApiUrls';
 import { User } from '../../store/UserProvider/UserProvider';
 import { AxiosError, AxiosResponse } from 'axios';
 import { wrapWithAuthHeaders } from '../utils/ApiHeadersUtils';
-
-export interface UserLoginRequestBody {
-  email: string;
-  password: string;
-}
-
-export interface UserLoginResponseBody {
-  token: string;
-}
+import {
+  UserLoginRequestBody,
+  UserLoginResponseBody
+} from '../../types/APITypes';
 
 export const getCurrentUser = async () =>
   (
@@ -31,18 +26,19 @@ export const useCurrentUser = (): UseQueryResult<User, AxiosError> => {
   return useQuery(QueryKeys.userCurrent, getCurrentUser);
 };
 
+const loginUser = ({ email, password }: UserLoginRequestBody) =>
+  Axios.post<UserLoginRequestBody, UserLoginResponseBody>(
+    serverUrl + ApiUrls.login,
+    {
+      password,
+      email
+    }
+  );
+
 export const useUserLoginMutation = (): UseMutationResult<
   AxiosResponse<UserLoginResponseBody>,
   AxiosError,
   UserLoginRequestBody
 > => {
-  return useMutation(({ email, password }) =>
-    Axios.post<UserLoginRequestBody, UserLoginResponseBody>(
-      serverUrl + ApiUrls.login,
-      {
-        password,
-        email
-      }
-    )
-  );
+  return useMutation(loginUser);
 };

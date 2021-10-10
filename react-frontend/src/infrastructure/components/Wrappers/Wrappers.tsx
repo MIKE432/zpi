@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { WithBlur, WithModal } from '../../../application/types/WrapperTypes';
-import { Blur, BlurOptions, ModalOptions, ModalStyled } from './Wrappers.style';
+import { WithBlur } from '../../../application/types/WrapperTypes';
+import { Blur, BlurOptions, ModalOptions } from './Wrappers.style';
 import { WithClassName } from '../StyledComponents';
 import { Paper } from '@mui/material';
 
