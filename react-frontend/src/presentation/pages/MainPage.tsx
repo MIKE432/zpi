@@ -1,3 +1,5 @@
+import { DevComponents } from './devComponentsTemp/DevComponents';
+
 export const MainPage = () => {
-  return <div>MainPage</div>;
+  return <DevComponents></DevComponents>;
 };
