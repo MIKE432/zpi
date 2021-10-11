@@ -2,6 +2,7 @@ package com.example.sztoswro.organization
 
 import com.example.sztoswro.exceptions.ForbiddenException
 import com.example.sztoswro.exceptions.NoContentException
+import com.example.sztoswro.member.RoleLevel
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service
 class OrganizationService(private val organizationRepo: OrganizationRepository) {
 
     fun getAll(): Iterable<OrganizationDAO> {
-        val organizations = organizationRepo.findAll() ?: throw NoContentException("No organizations found");
+        val organizations = organizationRepo.findAll();
         return organizations;
     };
 
@@ -35,5 +36,15 @@ class OrganizationService(private val organizationRepo: OrganizationRepository) 
     fun deleteOrganization(id: Long){
         organizationRepo.deleteById(id);
     };
+
+    fun addRole(id: Long, roleName: String, roleLevel: RoleLevel) {
+        val organization = getOrganization(id)
+        organization.organizationRoles.plus(Pair(roleName.toLowerCase(), roleLevel))
+    }
+
+    fun getRoles(id: Long): Map<String, String> {
+        val organization = getOrganization(id)
+        return organization.organizationRoles
+    }
 
 }

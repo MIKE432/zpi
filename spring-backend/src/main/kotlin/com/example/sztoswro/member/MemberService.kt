@@ -2,6 +2,7 @@ package com.example.sztoswro.member
 
 import com.example.sztoswro.exceptions.BadRequestException
 import com.example.sztoswro.exceptions.NoContentException
+import com.example.sztoswro.organization.OrganizationRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -10,17 +11,25 @@ import java.time.LocalDate
 import java.util.regex.Pattern
 
 @Service
-class MemberService(private val memberRepository: MemberRepository){
+class MemberService(private val memberRepository: MemberRepository, private val organizationRepository: OrganizationRepository){
     private val logger: Logger = LoggerFactory.getLogger(MemberService::class.simpleName)
 
     fun getAll(): Iterable<MemberDAO> { return memberRepository.findAll()}
 
     fun getMember(id: Long): MemberDAO {
-        return memberRepository.findById(id).get() ?: throw NoContentException("Member with id = {id} not found.")
+        val member = memberRepository.findById(id)
+        if (member.isPresent)
+            return member.get()
+        else
+            throw NoContentException("Member with id = {id} not found.")
     }
 
     fun findMember(email: String): MemberDAO {
-        return memberRepository.findByEmail(email).get() ?: throw NoContentException("Member with id = {id} not found.")
+        val member = memberRepository.findByEmail(email)
+        if (member.isPresent)
+            return member.get()
+        else
+            throw NoContentException("Member with id = {id} not found.")
     }
 
     fun addMember(memberDAO: MemberDAO) {
@@ -107,6 +116,21 @@ class MemberService(private val memberRepository: MemberRepository){
                 errors.plus(Error("Invalid value for birth date"))
             }
         }
+    }
+
+    fun addRole(organizationId: Long, projectId: Long, roleName: String, memberId: Long) {
+        val organizationDao = organizationRepository.findById(organizationId)
+        val roleLevel: RoleLevel? = organizationDao.get().organizationRoles[roleName]?.let { RoleLevel.valueOf(it) }
+        if (roleLevel != null) {
+            getMember(memberId).roles.roleMap[organizationId]?.addProjectRole(projectId, roleLevel)
+        }
+    }
+
+    fun getRole(organizationId: Long, projectId: Int, memberId: Long): String {
+        getMember(memberId).roles.roleMap[organizationId]?.projectRoleMap?.get(projectId)?.let {
+            roleLevel -> return roleLevel.name
+        }
+        return RoleLevel.none.name
     }
 }
 

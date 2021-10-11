@@ -34,11 +34,7 @@ data class MemberDAO(
         var accessionDates: Map<Long, LocalDate>,
         @ElementCollection
         var leaveDates: Map<Long, LocalDate>,
-        @ElementCollection
-        var roles: MutableSet<String>
-//        @ManyToMany
-//        var organizations: MutableSet<OrganizationDAO>,
-
+        var roles: Roles
 ) {
         constructor(): this(
                 1,
@@ -58,7 +54,7 @@ data class MemberDAO(
                 "987654321",
                 emptyMap<Long, LocalDate>(),
                 emptyMap<Long, LocalDate>(),
-                mutableSetOf<String>())
+                Roles())
 
         constructor(mem: MemberDTO): this(
                 1,

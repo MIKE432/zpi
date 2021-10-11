@@ -1,5 +1,6 @@
 package com.example.sztoswro.organization
 
+import com.example.sztoswro.member.RoleLevel
 import javax.persistence.*
 
 @Entity
@@ -15,7 +16,9 @@ data class OrganizationDAO (
     var careProvider: String,
     val registerFaculty: String,
     val activitiesArea: String,
-    val facultiesArea: String
+    val facultiesArea: String,
+    @ElementCollection
+    var organizationRoles: Map<String, String>
 ) {
     constructor(org: OrganizationDTO) : this(
         org.id,
@@ -26,10 +29,11 @@ data class OrganizationDAO (
         org.careProvider,
         org.registerFaculty,
         org.activitiesArea,
-        org.facultiesArea
+        org.facultiesArea,
+            emptyMap()
     )
 
-    constructor() : this(1, "hej", "ho", "hej", "ho", "hej", "sokoly", "omijajcie", "gory lasy doły")
+    constructor() : this(1, "hej", "ho", "hej", "ho", "hej", "sokoly", "omijajcie", "gory lasy doły", emptyMap())
 
     fun update(updateData: OrganizationDAO){
         this.name = updateData.name;
@@ -37,6 +41,7 @@ data class OrganizationDAO (
         this.about = updateData.about;
         this.type = updateData.type;
         this.careProvider = updateData.careProvider;
+        this.organizationRoles = updateData.organizationRoles;
     }
 
 }

@@ -29,7 +29,7 @@ data class MemberDTO(
         var accessionDates: Map<Long, LocalDate>,
         var leaveDates: Map<Long, LocalDate>,
         @ElementCollection
-        var roles: MutableSet<String>) {
+        var roles: Roles) {
     constructor(memberDAO: MemberDAO): this(
             memberDAO.name,
             memberDAO.lastName,
