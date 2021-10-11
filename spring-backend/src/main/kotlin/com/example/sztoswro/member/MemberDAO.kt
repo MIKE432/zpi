@@ -66,7 +66,7 @@ data class MemberDAO(
                 mem.lastName,
                 mem.email,
                 mem.phoneNumber,
-                mem.password,
+                mem.password.orEmpty(),
                 mem.faculty,
                 mem.studYear,
                 mem.department,
