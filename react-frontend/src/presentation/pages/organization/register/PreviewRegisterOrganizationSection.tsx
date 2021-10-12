@@ -1,9 +1,8 @@
-import { FC } from "react";
-import { RegisterOrganizationSectionProps } from "./RegisterOrganizationPage";
+import { FC } from 'react';
+import { RegisterOrganizationSectionProps } from './RegisterOrganizationPage';
 
-export const PreviewRegisterOrganizationSection: FC<Omit<RegisterOrganizationSectionProps, 'register'>> = ({ isVisible }) => {
-
-    return (
-        <div></div>
-    )
-}
+export const PreviewRegisterOrganizationSection: FC<
+  Omit<RegisterOrganizationSectionProps, 'register'>
+> = ({ isVisible }) => {
+  return isVisible ? <div>XD</div> : null;
+};

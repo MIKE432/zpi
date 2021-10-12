@@ -5,7 +5,7 @@ import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
-@Table
+@Table(name = "member")
 data class MemberDAO(
         @Id
         @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -16,8 +16,7 @@ data class MemberDAO(
         var lastName: String,
         @NotNull
         var email: String,
-        @NotNull
-        var phoneNumber: String,
+        var phoneNumber: String?,
         @NotNull
         var password: String,
         var faculty: String?,

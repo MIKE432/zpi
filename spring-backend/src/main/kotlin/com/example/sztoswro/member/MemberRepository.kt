@@ -7,4 +7,6 @@ import java.util.*
 @Repository
 interface MemberRepository: CrudRepository<MemberDAO, Long> {
     fun findByEmail(username: String): Optional<MemberDAO>
+
+    fun getMemberDAOByEmail(email: String): Optional<MemberDAO>
 }

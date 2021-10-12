@@ -2,6 +2,8 @@ package com.example.sztoswro.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.ApiKey
@@ -21,28 +23,30 @@ class SwaggerConfiguration {
     @Bean
     fun api(): Docket =
             Docket(DocumentationType.SWAGGER_2)
+                    .ignoredParameterTypes(UsernamePasswordAuthenticationToken::class.java)
                     .select()
                     .apis(RequestHandlerSelectors.basePackage("com.example.sztoswro"))
                     .paths(PathSelectors.any())
                     .build()
-                    .securitySchemes( singletonList(createSchema()))
+                    .securitySchemes(singletonList(createSchema()))
                     .securityContexts(singletonList(createContext()))
 
-    fun createContext(): SecurityContext {
+    private fun createContext(): SecurityContext {
         return SecurityContext.builder()
                 .securityReferences(createRef())
                 .forPaths(PathSelectors.any())
                 .build()
     }
 
-    fun createRef(): List<SecurityReference> {
-        val authorizationScope: AuthorizationScope = AuthorizationScope("global", "accessEverything")
-        val authorizationScopes: Array<AuthorizationScope> = arrayOf()
-        authorizationScopes.plus(authorizationScope)
-        return singletonList(SecurityReference("apiKey", authorizationScopes))
+    private fun createRef(): List<SecurityReference?> {
+        val authorizationScope = AuthorizationScope(
+                "global", "accessEverything")
+        val authorizationScopes: Array<AuthorizationScope?> = arrayOfNulls<AuthorizationScope>(1)
+        authorizationScopes[0] = authorizationScope
+        return listOf(SecurityReference("apiKey", authorizationScopes))
     }
 
-    fun createSchema(): SecurityScheme {
+    private fun createSchema(): SecurityScheme {
         return ApiKey("apiKey", "Authorization", "header")
     }
 }

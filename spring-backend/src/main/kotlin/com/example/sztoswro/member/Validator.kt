@@ -32,12 +32,14 @@ class Validator {
             }
         }
 
-        fun validatePhoneNumber(phoneNumber: String, errors: List<Error>) {
-            val isCorrect: Boolean = Pattern.compile(
-                    "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]*\$")
-                    .matcher(phoneNumber).matches()
-            if (!isCorrect) {
-                errors.plus(Error("This is not a correct phone number"))
+        fun validatePhoneNumber(phoneNumber: String?, errors: List<Error>) {
+            if (phoneNumber != null) {
+                val isCorrect: Boolean = Pattern.compile(
+                        "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]*\$")
+                        .matcher(phoneNumber).matches()
+                if (!isCorrect) {
+                    errors.plus(Error("This is not a correct phone number"))
+                }
             }
         }
 

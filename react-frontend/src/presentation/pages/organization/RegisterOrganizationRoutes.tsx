@@ -1,21 +1,21 @@
-import React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
-import { CenteredContent } from "../../../infrastructure/components/CenteredContent";
-import { RegisterOrganizationPage } from "./register/RegisterOrganizationPage";
+import React from 'react';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { RegisterOrganizationPage } from './register/RegisterOrganizationPage';
+import { Container } from '@mui/material';
 
 export const RegisterOrganizationRoutes = () => {
-    const { path } = useRouteMatch();
+  const { path } = useRouteMatch();
 
-    return (
-        <Switch>
-            <Route exact path={ path }>
-                <h3>Please select a topic.</h3>
-            </Route>
-            <Route path={ `${ path }/register` }>
-                <CenteredContent width="40%">
-                    <RegisterOrganizationPage/>
-                </CenteredContent>
-            </Route>
-        </Switch>
-    )
-}
+  return (
+    <Switch>
+      <Route exact path={path}>
+        <h3>Please select a topic.</h3>
+      </Route>
+      <Route path={`${path}/register`}>
+        <Container maxWidth="md">
+          <RegisterOrganizationPage />
+        </Container>
+      </Route>
+    </Switch>
+  );
+};

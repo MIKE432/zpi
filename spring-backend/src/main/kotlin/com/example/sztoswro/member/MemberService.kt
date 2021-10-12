@@ -24,6 +24,10 @@ class MemberService(private val memberRepository: MemberRepository,
             throw NoContentException("Member with id = {id} not found.")
     }
 
+    fun getByEmail(username: String): MemberDAO {
+        return memberRepository.getMemberDAOByEmail(username).orElseThrow { throw NoContentException("Member with id = {id} not found.") }
+    }
+
     fun findMember(email: String): MemberDAO {
         val member = memberRepository.findByEmail(email)
         if (member.isPresent)
