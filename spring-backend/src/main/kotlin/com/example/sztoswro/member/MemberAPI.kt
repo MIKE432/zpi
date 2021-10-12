@@ -34,7 +34,7 @@ interface MemberAPI {
     ])
     @DeleteMapping("/{id}")
     fun deleteMember(@ApiParam(name = "memberId", type = "Long", value = "The id of a member to retrieve", required = true)
-                     @PathVariable id: Long): MemberDTO
+                     @PathVariable id: Long)
 
     @ApiOperation(value = "Add member")
     @ApiResponses(value = [
@@ -53,4 +53,14 @@ interface MemberAPI {
     ])
     @PostMapping("/register")
     fun register(@RequestBody memberDTO: MemberDTO)
+
+    @ApiOperation(value = "Insert data of user with given id")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Member data added."),
+        ApiResponse(code = 204, message = "Member not found."),
+        ApiResponse(code = 500, message = "Internal server error.")])
+    @PutMapping("/{id}")
+    fun editData(@ApiParam(name = "memberId", type = "Long", value = "The id of a member to retrieve", required = true)
+                @PathVariable id: Long,
+                @RequestBody memberDTO: MemberDTO)
 }

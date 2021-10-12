@@ -20,21 +20,21 @@ data class MemberDAO(
         var phoneNumber: String,
         @NotNull
         var password: String,
-        var faculty: String,
-        var studYear: Int,
-        var department: String,
-        var university: String,
+        var faculty: String?,
+        var studYear: Int?,
+        var department: String?,
+        var university: String?,
         @NotNull
         var studId: String,
-        var birthDate: LocalDate,
-        var status: String,
-        var isActive: Boolean,
-        var ICENumber: String,
+        var birthDate: LocalDate?,
+        var status: String?,
+        var isActive: Boolean?,
+        var ICENumber: String?,
         @ElementCollection
-        var accessionDates: Map<Long, LocalDate>,
+        var accessionDates: Map<Long, LocalDate>?,
         @ElementCollection
-        var leaveDates: Map<Long, LocalDate>,
-        var roles: Roles
+        var leaveDates: Map<Long, LocalDate>?,
+        var roles: Roles?
 ) {
         constructor(): this(
                 1,

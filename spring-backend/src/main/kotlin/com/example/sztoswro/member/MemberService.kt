@@ -2,16 +2,16 @@ package com.example.sztoswro.member
 
 import com.example.sztoswro.exceptions.BadRequestException
 import com.example.sztoswro.exceptions.NoContentException
+import com.example.sztoswro.member.Validator.Companion.validate
 import com.example.sztoswro.organization.OrganizationRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import java.time.LocalDate
-import java.util.regex.Pattern
 
 @Service
-class MemberService(private val memberRepository: MemberRepository, private val organizationRepository: OrganizationRepository){
+class MemberService(private val memberRepository: MemberRepository,
+                    private val organizationRepository: OrganizationRepository){
     private val logger: Logger = LoggerFactory.getLogger(MemberService::class.simpleName)
 
     fun getAll(): Iterable<MemberDAO> { return memberRepository.findAll()}
@@ -41,11 +41,11 @@ class MemberService(private val memberRepository: MemberRepository, private val 
         }
     }
 
-    fun registerMember(memberDao: MemberDAO) {
-        val errors: List<Error> = validate(memberDao)
+    fun registerMember(memberDAO: MemberDAO) {
+        val errors: List<Error> = validate(memberDAO)
 
         if (errors.isEmpty()) {
-            addMember(memberDao)
+            addMember(memberDAO)
         } else {
             for (error in errors) {
                 logger.error(error.message)
@@ -55,66 +55,27 @@ class MemberService(private val memberRepository: MemberRepository, private val 
         }
     }
 
-    fun validate(member: MemberDAO): List<Error> {
-        val errors: List<Error> = emptyList()
-        validateEmail(member.email, errors)
-        validatePhoneNumber(member.phoneNumber, errors)
-        validatePassword(member.password, errors)
-        validateStudYear(member.studYear, errors)
-        validateBirthDate(member.birthDate, errors)
+    fun editData(id: Long, memberDAO: MemberDAO) {
+        val errors: List<Error> = validate(memberDAO)
 
-        return errors
-    }
+        if(errors.isEmpty()) {
+            val member: MemberDAO = memberRepository.findById(id).orElseThrow { throw NoContentException("Member not found") }
+            memberDAO.faculty.let { member.faculty = it }
+            memberDAO.studYear.let { member.studYear = it }
+            memberDAO.department.let { member.department = it }
+            memberDAO.university.let { member.university = it }
+            memberDAO.birthDate.let { member.birthDate = it }
+            memberDAO.status.let { member.status = it }
+            memberDAO.isActive.let { member.isActive = it }
+            memberDAO.ICENumber.let { member.ICENumber = it }
 
-    fun validateEmail(email: String, errors: List<Error>) {
-        val isCorrect: Boolean = Pattern.compile(
-                "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
-                        + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                        + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-                        + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                        + "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
-                        + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
-        ).matcher(email).matches()
-        if (!isCorrect) {
-            errors.plus(Error("This is not a correct email address"))
-        }
-    }
-
-    fun validatePhoneNumber(phoneNumber: String, errors: List<Error>) {
-        val isCorrect: Boolean =  Pattern.compile(
-                "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]*\$")
-                .matcher(phoneNumber).matches()
-        if (!isCorrect) {
-            errors.plus(Error("This is not a correct phone number"))
-        }
-    }
-
-    fun validatePassword(password: String?, errors: List<Error>) {
-        if (password == null) {
-            errors.plus(Error("Password cannot be empty"))
+            memberRepository.save(member)
         } else {
-            val isCorrect: Boolean =  password.length > 7
-            if (!isCorrect) {
-                errors.plus(Error("Password must have at least 8 characters"))
+            for (error in errors) {
+                logger.error(error.message)
             }
-        }
-    }
-
-    fun validateStudYear(year: Int?, errors: List<Error>) {
-        if (year != null) {
-            val isCorrect: Boolean = year < 10
-            if (!isCorrect) {
-                errors.plus(Error("People don't study that long"))
-            }
-        }
-    }
-
-    fun validateBirthDate(birthDate: LocalDate?, errors: List<Error>) {
-        if (birthDate != null) {
-            val isCorrect: Boolean = birthDate.isBefore(LocalDate.now()) and birthDate.isAfter(LocalDate.ofYearDay(1900, 0))
-            if (!isCorrect) {
-                errors.plus(Error("Invalid value for birth date"))
-            }
+            val errorMessage: String = errors[0].message.orEmpty()
+            throw BadRequestException(errorMessage)
         }
     }
 
@@ -122,12 +83,12 @@ class MemberService(private val memberRepository: MemberRepository, private val 
         val organizationDao = organizationRepository.findById(organizationId)
         val roleLevel: RoleLevel? = organizationDao.get().organizationRoles[roleName]?.let { RoleLevel.valueOf(it) }
         if (roleLevel != null) {
-            getMember(memberId).roles.roleMap[organizationId]?.addProjectRole(projectId, roleLevel)
+            getMember(memberId).roles?.roleMap?.get(organizationId)?.addProjectRole(projectId, roleLevel)
         }
     }
 
     fun getRole(organizationId: Long, projectId: Int, memberId: Long): String {
-        getMember(memberId).roles.roleMap[organizationId]?.projectRoleMap?.get(projectId)?.let {
+        getMember(memberId).roles?.roleMap?.get(organizationId)?.projectRoleMap?.get(projectId)?.let {
             roleLevel -> return roleLevel.name
         }
         return RoleLevel.none.name
