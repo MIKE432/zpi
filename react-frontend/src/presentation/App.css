@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+
+}
+
+* {
+  box-sizing: border-box;
+
 }
 
 .App-logo {
@@ -36,3 +42,26 @@
     transform: rotate(360deg);
   }
 }
+
+.slide-exit {
+  display: flex;
+  transform: translateY(50%);
+  opacity: 0;
+}
+
+.slide-exit.not-active {
+  display: none;
+  opacity: 0;
+}
+
+.slide-enter {
+  transform: translateY(0%);
+}
+
+.react-link {
+  text-decoration: none;
+}
+
+
+
+
