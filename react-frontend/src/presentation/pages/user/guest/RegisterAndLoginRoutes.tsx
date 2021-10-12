@@ -2,7 +2,7 @@ import { useRouteMatch, withRouter } from 'react-router-dom';
 import {
   AnimatedRoutes,
   RouteTransition
-} from '../../../infrastructure/components/AnimatedRoutes/AnimatedRoutes';
+} from '../../../../infrastructure/components/AnimatedRoutes/AnimatedRoutes';
 import React from 'react';
 import { LoginPage } from './LoginPage';
 import { RegisterPage } from './RegisterPage';

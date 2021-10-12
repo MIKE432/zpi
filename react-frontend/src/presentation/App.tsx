@@ -2,14 +2,20 @@ import React, { FC } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import { MainPage } from './pages/MainPage';
-import { RegisterAndLoginRoutes } from './pages/user/RegisterAndLoginRoutes';
+import { RegisterAndLoginRoutes } from './pages/user/guest/RegisterAndLoginRoutes';
 import { RegisterOrganizationRoutes } from './pages/organization/RegisterOrganizationRoutes';
 import { useUser } from '../application/hooks/useUser';
+import { MainContainer } from './pages/user/logged/mainContainer/MainContainer';
+import { SideNavBarProvider } from '../infrastructure/components/topbar/SideNavBar';
 
 const LoggedUser: FC = () => {
-  const { user } = useUser();
-
-  return <div>{user?.name}</div>;
+  return (
+    <SideNavBarProvider>
+      <BrowserRouter>
+        <MainContainer></MainContainer>
+      </BrowserRouter>
+    </SideNavBarProvider>
+  );
 };
 
 const NotLoggedUser: FC = () => {

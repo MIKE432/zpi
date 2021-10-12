@@ -1,7 +1,7 @@
 import {
   Modal,
   withBlur
-} from '../../../infrastructure/components/Wrappers/Wrappers';
+} from '../../../../infrastructure/components/Wrappers/Wrappers';
 import styled from '@emotion/styled';
 
 export const LoginMenu = styled.div`

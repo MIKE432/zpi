@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { UserProvider } from './application/store/UserProvider/UserProvider';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createTheme, Theme, ThemeProvider } from '@mui/material';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 const queryClientOptions = {
   defaultOptions: {
@@ -37,13 +38,15 @@ const ThemeProviderWrapper: FC = ({ children }) => {
 };
 
 ReactDOM.render(
-  <ThemeProviderWrapper>
-    <QueryClientProvider client={new QueryClient(queryClientOptions)}>
-      <UserProvider>
-        <App />
-      </UserProvider>
-    </QueryClientProvider>
-  </ThemeProviderWrapper>,
+  <StyledEngineProvider injectFirst>
+    <ThemeProviderWrapper>
+      <QueryClientProvider client={new QueryClient(queryClientOptions)}>
+        <UserProvider>
+          <App />
+        </UserProvider>
+      </QueryClientProvider>
+    </ThemeProviderWrapper>
+  </StyledEngineProvider>,
   document.getElementById('root')
 );
 

@@ -1,10 +1,10 @@
 import { Button, TextField } from '@mui/material';
 import React, { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { registerFormSchema } from '../../../application/formSchemas/RegisterAndLoginPageSchemas';
+import { registerFormSchema } from '../../../../application/formSchemas/RegisterAndLoginPageSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Scrollable } from '../../../infrastructure/components/Wrappers/Wrappers.style';
-import { useUser } from '../../../application/hooks/useUser';
+import { Scrollable } from '../../../../infrastructure/components/Wrappers/Wrappers.style';
+import { useUser } from '../../../../application/hooks/useUser';
 import { LoginAndRegisterFormStyled } from './RegisterAndLoginRoutes.style';
 
 interface Inputs {
@@ -21,7 +21,7 @@ const RegisterForm = () => {
     handleSubmit,
     formState: { errors }
   } = useForm({ resolver: yupResolver(registerFormSchema) });
-  const { setUser, user } = useUser();
+  const { user } = useUser();
   const onSubmit: SubmitHandler<Inputs> = (data: any) => console.log(data);
 
   return (
