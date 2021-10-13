@@ -7,69 +7,93 @@ import java.util.regex.Pattern
 class Validator {
 
     companion object {
-        fun validate(member: MemberDAO): List<Error> {
-            val errors: List<Error> = emptyList()
-            validateEmail(member.email, errors)
-            validatePhoneNumber(member.phoneNumber, errors)
-            validatePassword(member.password, errors)
-            validateStudYear(member.studYear, errors)
-            validateBirthDate(member.birthDate, errors)
+        fun validateRegistrationData(member: MemberDAO): List<Error> {
+            var errors: List<Error> = listOf<Error>()
+            validateNotNull(member.name, "name")?.let { errors = errors.plus(it) }
+            validateNotNull(member.lastName, "last name")?.let { errors = errors.plus(it) }
+            validateNotNull(member.email, "email")?.let { errors = errors.plus(it) }
+            validateEmail(member.email)?.let { errors = errors.plus(it) }
+            validateNotNull(member.password, "password")?.let { errors = errors.plus(it) }
+            validatePassword(member.password)?.let { errors = errors.plus(it) }
 
             return errors
         }
 
-        fun validateEmail(email: String, errors: List<Error>) {
-            val isCorrect: Boolean = Pattern.compile(
-                    "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
-                            + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                            + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-                            + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                            + "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
-                            + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
-            ).matcher(email).matches()
-            if (!isCorrect) {
-                errors.plus(Error("This is not a correct email address"))
-            }
+        fun validate(member: MemberDAO): List<Error> {
+            var errors: List<Error> = listOf<Error>()
+            validateEmail(member.email)?.let { errors = errors.plus(it) }
+            validatePhoneNumber(member.phoneNumber)?.let { errors = errors.plus(it)  }
+            validatePassword(member.password)?.let { errors = errors.plus(it) }
+            validateStudYear(member.studYear)?.let { errors = errors.plus(it) }
+            validateBirthDate(member.birthDate)?.let { errors = errors.plus(it) }
+
+            return errors
         }
 
-        fun validatePhoneNumber(phoneNumber: String?, errors: List<Error>) {
+        private fun validateNotNull(value: String?, name: String): Error?{
+            if (value.isNullOrEmpty()) {
+                return Error("The value of $name cannot be empty")
+            }
+            return null
+        }
+
+        fun validateEmail(email: String?): Error? {
+            if (!email.isNullOrBlank()) {
+                val isCorrect: Boolean = Pattern.compile(
+                        "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
+                                + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                                + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                                + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                                + "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
+                                + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
+                ).matcher(email).matches()
+                if (!isCorrect) {
+                    return Error("This is not a correct email address")
+                }
+            }
+            return null
+        }
+
+        fun validatePhoneNumber(phoneNumber: String?): Error?  {
             if (phoneNumber != null) {
                 val isCorrect: Boolean = Pattern.compile(
                         "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s./0-9]*\$")
                         .matcher(phoneNumber).matches()
                 if (!isCorrect) {
-                    errors.plus(Error("This is not a correct phone number"))
+                    return Error("This is not a correct phone number")
                 }
             }
+            return null
         }
 
-        fun validatePassword(password: String?, errors: List<Error>) {
-            if (password == null) {
-                errors.plus(Error("Password cannot be empty"))
-            } else {
+        fun validatePassword(password: String?): Error? {
+            if (!password.isNullOrEmpty()) {
                 val isCorrect: Boolean = password.length > 7
                 if (!isCorrect) {
-                    errors.plus(Error("Password must have at least 8 characters"))
+                    return Error("Password must have at least 8 characters")
                 }
             }
+            return null
         }
 
-        fun validateStudYear(year: Int?, errors: List<Error>) {
+        fun validateStudYear(year: Int?): Error? {
             if (year != null) {
                 val isCorrect: Boolean = year < 10
                 if (!isCorrect) {
-                    errors.plus(Error("People don't study that long"))
+                    return Error("People don't study that long")
                 }
             }
+            return null
         }
 
-        fun validateBirthDate(birthDate: LocalDate?, errors: List<Error>) {
+        fun validateBirthDate(birthDate: LocalDate?): Error? {
             if (birthDate != null) {
-                val isCorrect: Boolean = birthDate.isBefore(LocalDate.now()) and birthDate.isAfter(LocalDate.ofYearDay(1900, 0))
+                val isCorrect: Boolean = birthDate.isBefore(LocalDate.now()) and birthDate.isAfter(LocalDate.ofYearDay(1900, 1))
                 if (!isCorrect) {
-                    errors.plus(Error("Invalid value for birth date"))
+                    return Error("Invalid value for birth date")
                 }
             }
+            return null
         }
     }
 }

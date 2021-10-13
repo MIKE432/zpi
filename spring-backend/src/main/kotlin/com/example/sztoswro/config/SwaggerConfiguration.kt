@@ -1,9 +1,12 @@
 package com.example.sztoswro.config
 
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.ApiKey
@@ -14,12 +17,25 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
+import java.time.format.DateTimeFormatter
 import java.util.Collections.singletonList
 
 
 @Configuration
 @EnableSwagger2
 class SwaggerConfiguration {
+    private val dateFormat = "yyyy-MM-dd"
+    private val dateTimeFormat = "yyyy-MM-dd HH:mm:ss"
+
+    @Bean
+    fun jsonCustomizer(): Jackson2ObjectMapperBuilderCustomizer? {
+        return Jackson2ObjectMapperBuilderCustomizer { builder: Jackson2ObjectMapperBuilder ->
+            builder.simpleDateFormat(dateTimeFormat)
+            builder.serializers(LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)))
+            builder.serializers(LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)))
+        }
+    }
+
     @Bean
     fun api(): Docket =
             Docket(DocumentationType.SWAGGER_2)

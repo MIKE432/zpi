@@ -1,26 +1,19 @@
 package com.example.sztoswro.member
 
-import org.jetbrains.annotations.NotNull
-import org.springframework.lang.Nullable
 import java.time.LocalDate
 import javax.persistence.ElementCollection
 
 data class MemberDTO(
-        @NotNull
-        var name: String,
-        @NotNull
-        var lastName: String,
-        @NotNull
-        var email: String,
+        var name: String?,
+        var lastName: String?,
+        var email: String?,
         var phoneNumber: String?,
-        @Nullable
         var password: String?,
         var faculty: String?,
         var studYear: Int?,
         var department: String?,
         var university: String?,
-        @NotNull
-        var studId: String,
+        var studId: String?,
         var birthDate: LocalDate?,
         var status: String?,
         var isActive: Boolean?,

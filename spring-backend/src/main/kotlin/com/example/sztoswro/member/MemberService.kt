@@ -2,7 +2,9 @@ package com.example.sztoswro.member
 
 import com.example.sztoswro.exceptions.BadRequestException
 import com.example.sztoswro.exceptions.NoContentException
+import com.example.sztoswro.exceptions.UserAlreadyExists
 import com.example.sztoswro.member.Validator.Companion.validate
+import com.example.sztoswro.member.Validator.Companion.validateRegistrationData
 import com.example.sztoswro.organization.OrganizationRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -42,14 +44,17 @@ class MemberService(private val memberRepository: MemberRepository,
         if ( !aUser.isPresent ) {
             memberDAO.password = BCryptPasswordEncoder().encode(memberDAO.password)
             memberRepository.save(memberDAO)
+        } else {
+            throw UserAlreadyExists(memberDAO.email)
         }
     }
 
     fun registerMember(memberDAO: MemberDAO) {
-        val errors: List<Error> = validate(memberDAO)
+        val errors: List<Error> = validateRegistrationData(memberDAO)
 
         if (errors.isEmpty()) {
             addMember(memberDAO)
+
         } else {
             for (error in errors) {
                 logger.error(error.message)
@@ -65,6 +70,7 @@ class MemberService(private val memberRepository: MemberRepository,
         if(errors.isEmpty()) {
             val member: MemberDAO = memberRepository.findById(id).orElseThrow { throw NoContentException("Member not found") }
             memberDAO.faculty.let { member.faculty = it }
+            memberDAO.phoneNumber.let{ member.phoneNumber = it }
             memberDAO.studYear.let { member.studYear = it }
             memberDAO.department.let { member.department = it }
             memberDAO.university.let { member.university = it }

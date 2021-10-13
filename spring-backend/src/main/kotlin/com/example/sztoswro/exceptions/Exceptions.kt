@@ -2,7 +2,6 @@ package com.example.sztoswro.exceptions
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
-import java.lang.RuntimeException
 import javax.management.OperationsException
 import javax.security.auth.message.AuthException
 
@@ -25,4 +24,7 @@ class ForbiddenException(message: String) : OperationsException(message)
 //500
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 class InternalServerException(message:String) : Exception(message)
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+class UserAlreadyExists(message: String): Exception(message)
 

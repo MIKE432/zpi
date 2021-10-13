@@ -24,7 +24,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/member/1",
+					"raw": "http://localhost:8080/member/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -32,7 +32,7 @@
 					"port": "8080",
 					"path": [
 						"member",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -58,7 +58,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"michał\",\r\n    \"lastName\": \"fadrowski\",\r\n    \"email\": \"michał@fadrowski.com\",\r\n    \"username\": \"userfadro\",\r\n    \"password\": \"fadropass\"\r\n}",
+					"raw": "{\r\n    \"name\": \"michał\",\r\n    \"lastName\": \"fadrowski\",\r\n    \"email\": \"e@mail1.com\",\r\n    \"password\": \"password\",\r\n    \"studId\": \"1234\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -66,7 +66,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/member/",
+					"raw": "http://localhost:8080/member/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -74,7 +74,7 @@
 					"port": "8080",
 					"path": [
 						"member",
-						""
+						"register"
 					]
 				}
 			},
@@ -99,7 +99,35 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/member/",
+					"raw": "http://localhost:8080/member",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"member"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change member data",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phoneNumber\": \"123456789\",\r\n    \"faculty\": \"faculty\",\r\n    \"studYear\": 1,\r\n    \"department\": \"department\",\r\n    \"university\": \"university\",\r\n    \"birthDate\": \"1990-10-12\",\r\n    \"status\": \"what\",\r\n    \"isActive\": true,\r\n    \"ice\": \"987654321\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/member/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -107,7 +135,36 @@
 					"port": "8080",
 					"path": [
 						"member",
-						""
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change member data invalid phoneNumber",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n    \"faculty\": \"faculty\",\r\n    \"studYear\": 1,\r\n    \"department\": \"department\",\r\n    \"university\": \"university\",\r\n    \"studId\": \"1234\",\r\n    \"birthDate\": \"1990-10-12\",\r\n    \"status\": \"what\",\r\n    \"isActive\": true,\r\n    \"ice\": \"987654321\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/member/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"member",
+						"1"
 					]
 				}
 			},

@@ -69,7 +69,7 @@ interface OrganizationAPI {
         ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation."),
         ApiResponse(code = 500, message = "Internal Server error.")
     ])
-    @GetMapping("/{id}")
+    @GetMapping("/roles/{id}")
     fun addOrganizationRole(@ApiParam(name = "organization", type = "Long", value = "The id of a organization to retrieve", required = true)
                            @PathVariable id: Long,
                             @ApiParam(name = "role name", type = "String", value = "The name of a role to be added", required = true)
