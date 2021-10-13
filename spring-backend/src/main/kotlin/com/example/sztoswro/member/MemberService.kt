@@ -53,8 +53,9 @@ class MemberService(private val memberRepository: MemberRepository,
         val errors: List<Error> = validateRegistrationData(memberDAO)
 
         if (errors.isEmpty()) {
+            memberDAO.isEmailValidated = false
             addMember(memberDAO)
-
+//            sendValidationEmail
         } else {
             for (error in errors) {
                 logger.error(error.message)

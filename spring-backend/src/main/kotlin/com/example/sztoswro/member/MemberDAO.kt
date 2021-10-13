@@ -33,7 +33,8 @@ data class MemberDAO(
         var accessionDates: Map<Long, LocalDate>?,
         @ElementCollection
         var leaveDates: Map<Long, LocalDate>?,
-        var roles: Roles?
+        var roles: Roles?,
+        var isEmailValidated: Boolean
 ) {
         constructor(): this(
                 1,
@@ -53,7 +54,8 @@ data class MemberDAO(
                 "987654321",
                 emptyMap<Long, LocalDate>(),
                 emptyMap<Long, LocalDate>(),
-                Roles())
+                Roles(),
+        true)
 
         constructor(mem: MemberDTO): this(
                 1,
@@ -73,5 +75,6 @@ data class MemberDAO(
                 mem.ICE,
                 mem.accessionDates,
                 mem.leaveDates,
-                mem.roles)
+                mem.roles,
+        true)
 }

@@ -15,6 +15,8 @@ class Validator {
             validateEmail(member.email)?.let { errors = errors.plus(it) }
             validateNotNull(member.password, "password")?.let { errors = errors.plus(it) }
             validatePassword(member.password)?.let { errors = errors.plus(it) }
+            validateNotNull(member.studId, "student ID")?.let { errors = errors.plus(it)}
+            validateStudId(member.studId)?.let { errors = errors.plus(it)}
 
             return errors
         }
@@ -68,9 +70,15 @@ class Validator {
 
         fun validatePassword(password: String?): Error? {
             if (!password.isNullOrEmpty()) {
-                val isCorrect: Boolean = password.length > 7
+                var isCorrect: Boolean = password.length > 7
                 if (!isCorrect) {
                     return Error("Password must have at least 8 characters")
+                }
+                isCorrect = Pattern.compile(
+                        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}\$")
+                        .matcher(password).matches()
+                if (!isCorrect) {
+                    return Error("Password must contain at least one uppercase and lowercase letter and one number")
                 }
             }
             return null
@@ -91,6 +99,19 @@ class Validator {
                 val isCorrect: Boolean = birthDate.isBefore(LocalDate.now()) and birthDate.isAfter(LocalDate.ofYearDay(1900, 1))
                 if (!isCorrect) {
                     return Error("Invalid value for birth date")
+                }
+            }
+            return null
+        }
+
+        fun validateStudId(studId: String?): Error? {
+            if(!studId.isNullOrBlank()) {
+                val isCorrect: Boolean = (studId.length == 6 || studId.length == 9)
+                        && Pattern.compile(
+                        "^[0-9]*\$")
+                        .matcher(studId).matches()
+                if (!isCorrect) {
+                    return Error("Student ID must be 6 or 9 characters long and contain only numbers")
                 }
             }
             return null

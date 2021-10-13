@@ -22,9 +22,16 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/member/2",
+					"raw": "http://localhost:8080/member/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -32,7 +39,7 @@
 					"port": "8080",
 					"path": [
 						"member",
-						"2"
+						"1"
 					]
 				}
 			},
@@ -58,7 +65,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"michał\",\r\n    \"lastName\": \"fadrowski\",\r\n    \"email\": \"e@mail1.com\",\r\n    \"password\": \"password\",\r\n    \"studId\": \"1234\"\r\n}",
+					"raw": "{\r\n    \"name\": \"michał\",\r\n    \"lastName\": \"fadrowski\",\r\n    \"email\": \"e@maila.com\",\r\n    \"password\": \"Password1\",\r\n    \"studId\": \"123456\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -119,7 +126,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phoneNumber\": \"123456789\",\r\n    \"faculty\": \"faculty\",\r\n    \"studYear\": 1,\r\n    \"department\": \"department\",\r\n    \"university\": \"university\",\r\n    \"birthDate\": \"1990-10-12\",\r\n    \"status\": \"what\",\r\n    \"isActive\": true,\r\n    \"ice\": \"987654321\"\r\n}",
+					"raw": "{\r\n    \"phoneNumber\": \"123-456-789\",\r\n    \"faculty\": \"faculty\",\r\n    \"studYear\": 1,\r\n    \"department\": \"department\",\r\n    \"university\": \"university\",\r\n    \"birthDate\": \"2010-10-12\",\r\n    \"status\": \"what\",\r\n    \"isActive\": true,\r\n    \"ice\": \"987654321\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
