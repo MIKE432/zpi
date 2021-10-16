@@ -1,5 +1,6 @@
 package com.example.sztoswro.member
 
+import com.example.sztoswro.emails.EmailSender.Companion.sendValidationEmail
 import com.example.sztoswro.exceptions.BadRequestException
 import com.example.sztoswro.exceptions.NoContentException
 import com.example.sztoswro.exceptions.UserAlreadyExists
@@ -55,7 +56,7 @@ class MemberService(private val memberRepository: MemberRepository,
         if (errors.isEmpty()) {
             memberDAO.isEmailValidated = false
             addMember(memberDAO)
-//            sendValidationEmail
+            sendValidationEmail()
         } else {
             for (error in errors) {
                 logger.error(error.message)
