@@ -1,10 +1,10 @@
 package com.example.sztoswro.member
 
-import javax.persistence.ElementCollection
 import javax.persistence.Embeddable
+import javax.persistence.OneToMany
 
 @Embeddable
-class Roles (@ElementCollection val roleMap: Map<Long, ProjectRoleMap>)
+class Roles (@OneToMany var roleMap: MutableMap<Long, ProjectRoleMap>)
 {
-    constructor() :this(emptyMap())
+    constructor() :this(mutableMapOf<Long, ProjectRoleMap>())
 }

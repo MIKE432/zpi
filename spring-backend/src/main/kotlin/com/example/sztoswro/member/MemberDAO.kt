@@ -1,5 +1,6 @@
 package com.example.sztoswro.member
 
+import com.example.sztoswro.organization.OrganizationDAO
 import org.jetbrains.annotations.NotNull
 import java.time.LocalDate
 import javax.persistence.*
@@ -34,7 +35,9 @@ data class MemberDAO(
         @ElementCollection
         var leaveDates: Map<Long, LocalDate>?,
         var roles: Roles?,
-        var isEmailValidated: Boolean
+        var isEmailValidated: Boolean,
+        @ManyToMany
+        var organizations: MutableSet<OrganizationDAO>
 ) {
         constructor(): this(
                 1,
@@ -55,7 +58,9 @@ data class MemberDAO(
                 emptyMap<Long, LocalDate>(),
                 emptyMap<Long, LocalDate>(),
                 Roles(),
-        true)
+                false,
+                mutableSetOf()
+        )
 
         constructor(mem: MemberDTO): this(
                 1,
@@ -76,5 +81,7 @@ data class MemberDAO(
                 mem.accessionDates,
                 mem.leaveDates,
                 mem.roles,
-        true)
+                false,
+                mutableSetOf()
+        )
 }

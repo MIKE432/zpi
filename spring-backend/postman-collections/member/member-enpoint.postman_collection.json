@@ -65,7 +65,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"michał\",\r\n    \"lastName\": \"fadrowski\",\r\n    \"email\": \"e@maila.com\",\r\n    \"password\": \"Password1\",\r\n    \"studId\": \"123456\"\r\n}",
+					"raw": "{\r\n    \"name\": \"michał\",\r\n    \"lastName\": \"fadrowski\",\r\n    \"email\": \"e@mails1.com\",\r\n    \"password\": \"Password1\",\r\n    \"studId\": \"123456\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -171,6 +171,54 @@
 					"port": "8080",
 					"path": [
 						"member",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get organization",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/organization",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post organization",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"organizacja nazwa\",\r\n  \"email\": \"imejl\",\r\n  \"about\": \"string\",\r\n  \"type\": \"string\",\r\n  \"careProvider\": \"string\",\r\n  \"registerFaculty\": \"string\",\r\n  \"activitiesArea\": \"string\",\r\n  \"facultiesArea\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/organization/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"organization",
 						"1"
 					]
 				}

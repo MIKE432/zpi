@@ -35,8 +35,8 @@ interface OrganizationAPI {
         ApiResponse(code = 401, message = "Unauthorized to perform this operation."),
         ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
     ])
-    @PostMapping("")
-    fun addOrganization(@RequestBody organizationDTO: OrganizationDTO)
+    @PostMapping("/{memberId}")
+    fun addOrganization(@RequestBody organizationDTO: OrganizationDTO, @PathVariable memberId: Long)
 
     @ApiOperation(value = "Update organization")
     @ApiResponses(value = [
@@ -76,4 +76,15 @@ interface OrganizationAPI {
                             @PathParam(value = "rn") roleName: String,
                             @ApiParam(name = "role level", type = "String", value = "Level of an added role. One of [none, basic, medium, general, full_access]", required = true)
                             @PathParam(value = "rl") roleLevel: RoleLevel)
+
+    @ApiOperation(value = "Add member to organization")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Member added to organization."),
+        ApiResponse(code = 204, message = "Organization not found."),
+        ApiResponse(code = 401, message = "Unauthorized to perform this operation."),
+        ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation."),
+        ApiResponse(code = 500, message = "Internal Server error.")
+    ])
+    @GetMapping("/members")
+    fun addMemberToOrganization(@PathParam(value = "orgId") orgId: Long, @PathParam(value = "memId") memId: Long )
 }

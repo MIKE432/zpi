@@ -1,5 +1,6 @@
 package com.example.sztoswro.organization
 
+import com.example.sztoswro.member.MemberDAO
 import com.example.sztoswro.member.RoleLevel
 import javax.persistence.*
 
@@ -7,18 +8,21 @@ import javax.persistence.*
 @Table(name = "organization")
 data class OrganizationDAO (
 
-    @Id
-    var id: Long,
-    var name: String,
-    var email: String,
-    var about: String,
-    var type: String,
-    var careProvider: String,
-    val registerFaculty: String,
-    val activitiesArea: String,
-    val facultiesArea: String,
-    @ElementCollection
-    var organizationRoles: Map<String, String>
+        @Id
+        var id: Long,
+        @Column(unique = true)
+        var name: String,
+        var email: String,
+        var about: String,
+        var type: String,
+        var careProvider: String,
+        val registerFaculty: String,
+        val activitiesArea: String,
+        val facultiesArea: String,
+        @ElementCollection
+    var organizationRoles: Map<String, String>,
+        @ManyToMany
+        var members: MutableSet<MemberDAO>
 ) {
     constructor(org: OrganizationDTO) : this(
         org.id,
@@ -30,10 +34,11 @@ data class OrganizationDAO (
         org.registerFaculty,
         org.activitiesArea,
         org.facultiesArea,
-            emptyMap()
+            emptyMap(),
+            mutableSetOf()
     )
 
-    constructor() : this(1, "hej", "ho", "hej", "ho", "hej", "sokoly", "omijajcie", "gory lasy doły", emptyMap())
+    constructor() : this(1, "hej", "ho", "hej", "ho", "hej", "sokoly", "omijajcie", "gory lasy doły", emptyMap(), mutableSetOf())
 
     fun update(updateData: OrganizationDAO){
         this.name = updateData.name;
@@ -42,6 +47,7 @@ data class OrganizationDAO (
         this.type = updateData.type;
         this.careProvider = updateData.careProvider;
         this.organizationRoles = updateData.organizationRoles;
+        this.members = updateData.members
     }
 
 }
