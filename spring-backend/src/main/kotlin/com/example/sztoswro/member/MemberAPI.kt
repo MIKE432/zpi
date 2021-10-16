@@ -44,7 +44,7 @@ interface MemberAPI {
         ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
     ])
     @PostMapping("")
-    fun addMember(@RequestBody memberDTO: MemberDTO, @RequestBody password: String)
+    fun addMember(@RequestBody memberDTO: MemberDTO)
 
     @ApiOperation(value = "Register a member")
     @ApiResponses(value = [
