@@ -24,7 +24,7 @@ class MemberController(val memberService: MemberService): MemberAPI {
         TODO("Not yet implemented")
     }
 
-    override fun addMember(memberDTO: MemberDTO, password: String) {
+    override fun addMember(memberDTO: MemberDTO) {
         memberService.addMember(MemberDAO(memberDTO))
     }
 
