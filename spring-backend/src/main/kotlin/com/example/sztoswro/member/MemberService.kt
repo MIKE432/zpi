@@ -49,6 +49,10 @@ class MemberService(private val memberRepository: MemberRepository,
         }
     }
 
+    fun deleteMember(memberDAO: MemberDAO) {
+
+    }
+
     fun registerMember(memberDAO: MemberDAO) {
         val errors: List<Error> = validateRegistrationData(memberDAO)
 
