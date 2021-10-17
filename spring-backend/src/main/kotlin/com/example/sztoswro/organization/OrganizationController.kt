@@ -11,11 +11,10 @@ class OrganizationController(val organizationService: OrganizationService) : Org
 
     override fun getOrganization(id: Long): OrganizationDTO {
         return OrganizationDTO(organizationService.getOrganization(id));
-
     }
 
-    override fun addOrganization(organizationDTO: OrganizationDTO) {
-        organizationService.addOrganization(OrganizationDAO(organizationDTO))
+    override fun addOrganization(organizationDTO: OrganizationDTO, memberId: Long) {
+        organizationService.addOrganization(OrganizationDAO(organizationDTO), memberId)
     }
 
     override fun updateOrganization(id: Long, organizationDTO: OrganizationDTO) {
@@ -28,6 +27,10 @@ class OrganizationController(val organizationService: OrganizationService) : Org
 
     override fun addOrganizationRole(id: Long, roleName: String, roleLevel: RoleLevel) {
         organizationService.addRole(id, roleName, roleLevel)
+    }
+
+    override fun addMemberToOrganization(orgId: Long, memId: Long) {
+        organizationService.addMember(orgId, memId)
     }
 
 }
