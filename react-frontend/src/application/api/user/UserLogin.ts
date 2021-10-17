@@ -15,9 +15,11 @@ import {
   UserLoginResponseBody
 } from '../../types/APITypes';
 
+export const TOKEN = 'token';
+
 export const getCurrentUser = async () =>
   (
-    await Axios.get<User>(serverUrl + ApiUrls.member + 'current', {
+    await Axios.get<User>(serverUrl + ApiUrls.member + '/current', {
       headers: wrapWithAuthHeaders({})
     })
   ).data;

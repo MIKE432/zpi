@@ -1,16 +1,22 @@
 import { Button, TextField } from '@mui/material';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { registerFormSchema } from '../../../../application/formSchemas/RegisterAndLoginPageSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Scrollable } from '../../../../infrastructure/components/Wrappers/Wrappers.style';
 import { useUser } from '../../../../application/hooks/useUser';
-import { LoginAndRegisterFormStyled } from './RegisterAndLoginRoutes.style';
+import {
+  AlertStyled,
+  LoginAndRegisterFormStyled
+} from './RegisterAndLoginRoutes.style';
+import cookies from 'js-cookie';
+import { useHistory } from 'react-router-dom';
 
 interface Inputs {
-  firstName: string;
-  surname: string;
+  name: string;
+  lastName: string;
   email: string;
+  studId: string;
   password1: string;
   password2: string;
 }
@@ -21,8 +27,42 @@ const RegisterForm = () => {
     handleSubmit,
     formState: { errors }
   } = useForm({ resolver: yupResolver(registerFormSchema) });
-  const { user } = useUser();
-  const onSubmit: SubmitHandler<Inputs> = (data: any) => console.log(data);
+  const [error, setError] = useState(false);
+  const { replace } = useHistory();
+  const { user, useRegister, useLogin, getCurrentUserAndReload } = useUser();
+  const { mutate: mutateLogin } = useLogin();
+  const { mutate: mutateRegister } = useRegister();
+
+  const onSubmit: SubmitHandler<Inputs> = ({
+    password2,
+    password1: password,
+    ...data
+  }: any) => {
+    mutateRegister(
+      { ...data, password },
+      {
+        onSuccess: () => {
+          mutateLogin(
+            { email: data.email, password },
+            {
+              onSuccess: async (response) => {
+                cookies.set('token', response.data.token);
+                await getCurrentUserAndReload();
+                replace('/');
+              },
+              onError: (error) => {
+                replace('/user/login');
+                setError(true);
+              }
+            }
+          );
+        },
+        onError: () => {
+          setError(true);
+        }
+      }
+    );
+  };
 
   return (
     <>
@@ -30,16 +70,16 @@ const RegisterForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Scrollable maxHeight="80vh">
           <TextField
-            id="firstName"
+            id="name"
             margin="normal"
             label="Imię"
             size="small"
             type="text"
             variant="outlined"
             fullWidth={true}
-            error={!!errors.firstName}
-            helperText={errors.firstName?.message}
-            {...register('firstName')}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            {...register('name')}
           />
           <TextField
             id="lastName"
@@ -49,9 +89,9 @@ const RegisterForm = () => {
             type="text"
             variant="outlined"
             fullWidth={true}
-            error={!!errors.surname}
-            helperText={errors.surname?.message}
-            {...register('surname')}
+            error={!!errors.lastName}
+            helperText={errors.lastName?.message}
+            {...register('lastName')}
           />
           <TextField
             id="email"
@@ -64,6 +104,18 @@ const RegisterForm = () => {
             error={!!errors.email}
             helperText={errors.email?.message}
             {...register('email')}
+          />
+          <TextField
+            id="index"
+            margin="normal"
+            label="Indeks studencki"
+            size="small"
+            type="number"
+            variant="outlined"
+            fullWidth={true}
+            error={!!errors.studId}
+            helperText={errors.studId?.message}
+            {...register('studId')}
           />
           <TextField
             id="password1"
@@ -98,6 +150,11 @@ const RegisterForm = () => {
         >
           Zarejestruj się
         </Button>
+        {error && (
+          <AlertStyled severity="error">
+            Nie udało się zarejestrować
+          </AlertStyled>
+        )}
       </form>
     </>
   );
