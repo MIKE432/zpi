@@ -6,7 +6,7 @@ import com.example.sztoswro.exceptions.NoContentException
 import com.example.sztoswro.exceptions.UserAlreadyExists
 import com.example.sztoswro.member.Validator.Companion.validate
 import com.example.sztoswro.member.Validator.Companion.validateRegistrationData
-import com.example.sztoswro.organization.OrganizationRepository
+import com.example.sztoswro.organization.OrganizationDAO
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class MemberService(private val memberRepository: MemberRepository,
-                    private val organizationRepository: OrganizationRepository){
+                    private val roleService: RoleService){
     private val logger: Logger = LoggerFactory.getLogger(MemberService::class.simpleName)
 
     fun getAll(): Iterable<MemberDAO> { return memberRepository.findAll()}
@@ -48,6 +48,13 @@ class MemberService(private val memberRepository: MemberRepository,
         } else {
             throw UserAlreadyExists(memberDAO.email)
         }
+    }
+
+    fun deleteMember(memberDAO: MemberDAO) {
+    }
+
+    fun deleteAll() {
+        memberRepository.deleteAll()
     }
 
     fun registerMember(memberDAO: MemberDAO) {
@@ -91,19 +98,25 @@ class MemberService(private val memberRepository: MemberRepository,
         }
     }
 
-    fun addRole(organizationId: Long, projectId: Long, roleName: String, memberId: Long) {
-        val organizationDao = organizationRepository.findById(organizationId)
-        val roleLevel: RoleLevel? = organizationDao.get().organizationRoles[roleName]?.let { RoleLevel.valueOf(it) }
-        if (roleLevel != null) {
-            getMember(memberId).roles?.roleMap?.get(organizationId)?.addProjectRole(projectId, roleLevel)
+    fun addRole(organizationId: Long, projectId: Long, roleLevel: RoleLevel, memberId: Long) {
+        val member = getMember(memberId)
+        if (member.roles == null) {
+            member.roles = Roles()
         }
+            roleService.addRole(member.roles!!, organizationId, projectId, roleLevel)
+        memberRepository.save(member)
     }
 
-    fun getRole(organizationId: Long, projectId: Int, memberId: Long): String {
+    fun getRole(organizationId: Long, projectId: Long, memberId: Long): String {
         getMember(memberId).roles?.roleMap?.get(organizationId)?.projectRoleMap?.get(projectId)?.let {
             roleLevel -> return roleLevel.name
         }
         return RoleLevel.none.name
+    }
+
+    fun addOrganization(memberDao: MemberDAO, organizationDAO: OrganizationDAO) {
+        addRole(organizationDAO.id, 0, RoleLevel.basic, memberDao.id)
+        memberRepository.save(memberDao)
     }
 }
 
