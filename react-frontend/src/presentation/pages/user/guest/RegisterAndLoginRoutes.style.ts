@@ -3,6 +3,8 @@ import {
   withBlur
 } from '../../../../infrastructure/components/Wrappers/Wrappers';
 import styled from '@emotion/styled';
+import { Alert } from '@mui/material';
+import Meeting from '../../../../assets/meeting.jpg';
 
 export const LoginMenu = styled.div`
   display: flex;
@@ -21,7 +23,7 @@ export const RegisterAndLoginModuleContainerStyled = withBlur(styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  background-image: url(https://source.unsplash.com/Q7PclNhVRI0);
+  background-image: url(${Meeting});
   width: 100vw;
   overflow: hidden;
 `);
@@ -51,4 +53,8 @@ export const LoginMenuContainer = styled.div`
 export const LoginAndRegisterFormStyled = styled(Modal)`
   padding: 20px;
   shadow: 0px;
+`;
+
+export const AlertStyled = styled(Alert)`
+  margin-top: 10px;
 `;

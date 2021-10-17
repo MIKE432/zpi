@@ -1,11 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginFormSchema } from '../../../../application/formSchemas/RegisterAndLoginPageSchemas';
 import { useUser } from '../../../../application/hooks/useUser';
 import { Button, TextField } from '@mui/material';
 import cookies from 'js-cookie';
-import { LoginAndRegisterFormStyled } from './RegisterAndLoginRoutes.style';
+import {
+  AlertStyled,
+  LoginAndRegisterFormStyled
+} from './RegisterAndLoginRoutes.style';
 import { useHistory } from 'react-router-dom';
 
 export interface LoginInputs {
@@ -19,16 +22,20 @@ const LoginPageForm: FC = () => {
     handleSubmit,
     formState: { errors }
   } = useForm({ resolver: yupResolver(loginFormSchema) });
+  const [error, setError] = useState(false);
   const { useLogin, getCurrentUserAndReload } = useUser();
-  const { replace } = useHistory();
   const { mutate } = useLogin();
+  const { replace } = useHistory();
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     mutate(data, {
       onSuccess: async (data) => {
         cookies.set('token', data.data.token);
-        replace('/');
         await getCurrentUserAndReload();
+        replace('/');
+      },
+      onError: () => {
+        setError(true);
       }
     });
   };
@@ -66,6 +73,9 @@ const LoginPageForm: FC = () => {
       >
         Zaloguj
       </Button>
+      {error && (
+        <AlertStyled severity="error">Niepoprawny email lub hasło</AlertStyled>
+      )}
     </form>
   );
 };

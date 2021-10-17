@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { TopBar } from '../../../../../infrastructure/components/topbar/TopBar';
-import { Avatar, ButtonBase } from '@mui/material';
+import { Avatar, Box, Chip, Paper } from '@mui/material';
 
-export const TopBarStyled = styled(TopBar)`
+export const TopBarStyled = styled(TopBar)<{ bgColor: string }>`
   padding: 16px 24px;
-  background-color: white;
+  background-color: ${(props) => props.bgColor};
 `;
 
 export const AppBarContentStyled = styled.div`
@@ -13,39 +13,30 @@ export const AppBarContentStyled = styled.div`
   justify-content: space-between;
 `;
 
-export const AvatarStyled = styled(Avatar)`
-  height: 28px;
-  width: 28px;
-  margin: 3px 0;
-  margin-left: 3px;
+export const PaperSettingsStyled = styled(Paper)`
+  border-radius: 15px;
+  shadow-box: 40px;
 `;
 
-export const ButtonBaseStyled = styled(ButtonBase)`
-  padding: 5px 5px;
-  background-color: white;
-  border-radius: 24px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-`;
-
-export const SettingIconStyled = styled.img`
-  width: 18px;
-  height: 18px;
-  margin-right: 8px;
-`;
-
-export const ChildrenContainerStyled = styled.div<{ isOpen: boolean }>`
+export const ChildrenContainerStyled = styled(Box)<{ isOpen: boolean }>`
   margin: 76px 15px 0 15px;
   overflow: scroll;
-  height: 100%;
-  background-color: #e3f2fd;
+  height: calc(100% - 76px);
   padding: 15px;
-  border-radius: 15px;
+  border-radius: 15px 15px 0 0;
   margin-left: ${(props) => (props.isOpen ? 240 : 15)}px;
 `;
 
 export const MainContainerStyled = styled.div`
+  height: 100vh;
+`;
+
+export const OuterContentContainerStyled = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const InnerContentContainerStyled = styled.div`
+  width: 100%;
   height: 100vh;
 `;

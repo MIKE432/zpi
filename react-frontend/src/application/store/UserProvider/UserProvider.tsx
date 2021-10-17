@@ -15,23 +15,28 @@ const defaultSetUser = () => {};
 
 export interface UserCtx {
   user?: User;
-  setUser: (user: User) => void;
+  setUser: (user?: User) => void;
 }
 export const UserContext = createContext<UserCtx>({ setUser: defaultSetUser });
 
 export const UserProvider: FC = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User>();
-  const { data, isLoading } = useCurrentUser();
+  const { data, isError, isFetching } = useCurrentUser();
 
   useEffect(() => {
-    setCurrentUser(data);
+    if (data && !isError) {
+      setCurrentUser(data);
+    }
   }, [data]);
 
   return (
     <UserContext.Provider
-      value={{ user: currentUser, setUser: (user) => setCurrentUser(user) }}
+      value={{
+        user: currentUser,
+        setUser: (user) => setCurrentUser(user)
+      }}
     >
-      {isLoading ? <LoadingBarStyled /> : children}
+      {isFetching ? <LoadingBarStyled /> : children}
     </UserContext.Provider>
   );
 };
