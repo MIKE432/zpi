@@ -50,7 +50,10 @@ class MemberService(private val memberRepository: MemberRepository,
     }
 
     fun deleteMember(memberDAO: MemberDAO) {
+    }
 
+    fun deleteAll() {
+        memberRepository.deleteAll()
     }
 
     fun registerMember(memberDAO: MemberDAO) {

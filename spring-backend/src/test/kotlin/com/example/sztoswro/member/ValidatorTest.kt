@@ -6,9 +6,22 @@ import org.junit.jupiter.api.Test
 
 internal class ValidatorTest {
 
+    //TEST PASSWORD VALIDATION
     @Test
     fun testPassword() {
-        val password: String = "Test123$"
+        val password: String = "Test123."
+        assertNull(Validator.validatePassword(password))
+    }
+
+    @Test
+    fun testPasswordSpecials() {
+        val password: String = "Test1!@#$%^&*()_+=-,.?"
+        assertNull(Validator.validatePassword(password))
+    }
+
+    @Test
+    fun testPasswordPolish() {
+        val password: String = "AęóąśłżźćńĘÓĄŚŁŻŹĆŃ123."
         assertNull(Validator.validatePassword(password))
     }
 
@@ -65,4 +78,7 @@ internal class ValidatorTest {
         val password: String = "!@#$%^&()_+=-"
         assertNotNull(Validator.validatePassword(password))
     }
+
+    //TEST EMAIL VALIDATION
+
 }

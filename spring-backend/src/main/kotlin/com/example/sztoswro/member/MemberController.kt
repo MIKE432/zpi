@@ -19,6 +19,10 @@ class MemberController(val memberService: MemberService): MemberAPI {
         TODO("Not yet implemented")
     }
 
+    override fun deleteAll() {
+        memberService.deleteAll()
+    }
+
     override fun addMember(memberDTO: MemberDTO) {
         memberService.addMember(MemberDAO(memberDTO))
     }

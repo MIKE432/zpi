@@ -37,6 +37,16 @@ interface MemberAPI {
     fun deleteMember(@ApiParam(name = "memberId", type = "Long", value = "The id of a member to retrieve", required = true)
                      @PathVariable id: Long)
 
+    @ApiOperation(value = "Delete all members")
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Members deleted."),
+        ApiResponse(code = 500, message = "Internal Server error."),
+        ApiResponse(code = 401, message = "Unauthorized to perform this operation."),
+        ApiResponse(code = 403, message = "Operation forbidden. You don't have the access to this operation.")
+    ])
+    @DeleteMapping("")
+    fun deleteAll()
+
     @ApiOperation(value = "Add member")
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Member added."),
